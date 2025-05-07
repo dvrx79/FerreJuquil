@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Controlador;
+package ManejoTablas;
 
 import Conexion.Conexion;
 import java.sql.*;
@@ -22,7 +22,6 @@ public class InsertarProducto {
      * @param unidadMedida Unidad de medida (litro, kg, etc.)
      * @param fechaIngreso Fecha de ingreso al inventario
      * @param nombreProveedor Nombre del proveedor (null o vacío si no aplica)
-     * @param iva Porcentaje de IVA aplicado
      * @param urlImagen URL de la imagen del producto (opcional)
      * @return true si se insertó correctamente, false en caso contrario
      * @throws SQLException Si ocurre un error en la base de datos
@@ -38,7 +37,6 @@ public class InsertarProducto {
             String unidadMedida,
             Date fechaIngreso,
             String nombreProveedor,
-            float iva,
             String urlImagen) throws SQLException {
         
         Connection con = null;
@@ -79,7 +77,6 @@ public class InsertarProducto {
                                     idProveedor,
                                     cantidad,
                                     precioCompra,
-                                    iva,
                                     fechaIngreso);
                         }
                     }
@@ -232,10 +229,9 @@ public class InsertarProducto {
             int idProveedor,
             int cantidad,
             float precioUnitario,
-            float iva,
             Date fechaCompra) throws SQLException {
         
-        float montoTotal = (precioUnitario * cantidad) * (1 + iva/100);
+        float montoTotal = (precioUnitario * cantidad);
         
         String sql = "INSERT INTO COMPRA ("
                 + "monto_total, cantidad, fecha_compra, estado, id_producto, id_proveedor) "
