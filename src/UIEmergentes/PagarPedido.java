@@ -862,159 +862,144 @@ public class PagarPedido extends javax.swing.JDialog {
         }}
     }//GEN-LAST:event_btnPagadoActionPerformed
 
-    private void generarFactura() throws SQLException{
-       String uuid = "755AD17E-C125-43CE-B4B7-738AFC3A5FBB";
-       String numeroCertificado = "20001000000100005868";
-       String fecha;
-       String nombreCliente;
-       String rfCliente;
-       String direccionCliente;
-       String ciudadEstadoCp;
-       String telefono;
-       List<String[]> productos = new ArrayList<>();;
-       String totalLetra;
-       String usoCFDI;
-       String tipoPersona = "PERSONA FISICA";
-       String subtotal;
-       String descuento;
-       String impuestos;
-       String total;
-       
-       LocalDate fechaActual = LocalDate.now();
-       LocalTime horaActual = LocalTime.now();
+private void generarFactura() throws SQLException {
+    String uuid = "755AD17E-C125-43CE-B4B7-738AFC3A5FBB";
+    String numeroCertificado = "20001000000100005868";
+    String fecha;
+    String nombreCliente;
+    String rfCliente;
+    String direccionCliente;
+    String ciudadEstadoCp;
+    String telefono;
+    List<String[]> productos = new ArrayList<>();
+    String totalLetra;
+    String usoCFDI;
+    String tipoPersona = "PERSONA FISICA";
+    String subtotal;
+    String descuento;
+    String impuestos;
+    String total;
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    LocalDate fechaActual = LocalDate.now();
+    LocalTime horaActual = LocalTime.now();
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
 
-        fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
-       
-       Cliente cliFac = manejoclientes.buscarClientePorIdFactura(idCliente);
-       nombreCliente = cliFac.getNombre()+" "+cliFac.getaPaterno()+" "+cliFac.getaMaterno();
-       rfCliente = cliFac.getRfc();
-       direccionCliente = cliFac.getDireccion();
-       ciudadEstadoCp = cliFac.getColEstCP();
-       telefono = cliFac.getNumero();
-       
-       List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+    Cliente cliFac = manejoclientes.buscarClientePorIdFactura(idCliente);
+    nombreCliente = cliFac.getNombre() + " " + cliFac.getaPaterno() + " " + cliFac.getaMaterno();
+    rfCliente = cliFac.getRfc();
+    direccionCliente = cliFac.getDireccion();
+    ciudadEstadoCp = cliFac.getColEstCP();
+    telefono = cliFac.getNumero();
 
-       for (MostrarProducto producto : prodFac) {
-            float cantidad = producto.getCantidadVendida();
-            String unidad = producto.getUnidadMedida();
-            String descripcion = producto.getDescripcion();
-            float costo = producto.getCostoVenta();
-            float importe = cantidad * costo;
+    List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+    double subtotalCalculo = 0.0;
 
-            String[] fila = new String[] {
-                String.valueOf(cantidad)+"000",
-                unidad,
-                descripcion,
-                String.format("%.2f", costo),
-                String.format("%.2f", importe)
-            };
+    for (MostrarProducto producto : prodFac) {
+        float cantidad = producto.getCantidadVendida();  // No redondeamos
+        String unidad = producto.getUnidadMedida();
+        String descripcion = producto.getDescripcion();
+        float costo = producto.getCostoVenta();
+        float importe = cantidad * costo;
 
+        subtotalCalculo += importe;
+
+        String[] fila = new String[] {
+            String.format("%.2f", cantidad),
+            unidad,
+            descripcion,
+            String.format("%.2f", costo),
+            String.format("%.2f", importe)
+        };
         productos.add(fila);
-        }
+    }
 
-       MostrarVentas mvFactura = manejoventas.obtenerVentaPorId(idVenta);
-       Double iva;
-       Double sbtl;
-       Double calculodesc; 
-       
-        if (cliFac.getNumeroCompras() > 25) {
-            calculodesc = mvFactura.getMonto() * 0.1;
-            Double Totalreal = mvFactura.getMonto() - calculodesc;
-            iva = Totalreal * (0.16 / (1 + 0.16));
-            sbtl = Totalreal - iva;
-            subtotal = String.format("%.2f", sbtl); // Formatear a 2 decimales
-            descuento = String.format("%.2f", calculodesc); // Formatear a 2 decimales
-            impuestos = String.format("%.2f", iva); // Formatear a 2 decimales
-            total = String.format("%.2f", Totalreal); // Formatear a 2 decimales
-            totalLetra = NumeroALetras.convertir(Totalreal);
-        } else {
-            calculodesc = 0.00;
-            Double Totalreal = mvFactura.getMonto();
-            iva = mvFactura.getMonto() * (0.16 / (1 + 0.16));
-            sbtl = mvFactura.getMonto() - iva;
-            subtotal = String.format("%.2f", sbtl); // Formatear a 2 decimales
-            descuento = String.format("%.2f", calculodesc); // Formatear a 2 decimales
-            impuestos = String.format("%.2f", iva); // Formatear a 2 decimales
-            total = String.format("%.2f", Totalreal); // Formatear a 2 decimales
-            totalLetra = NumeroALetras.convertir(Totalreal);
-        }
+    // Aplicar descuento si el cliente ha hecho más de 25 compras
+    double calculodesc = (cliFac.getNumeroCompras() > 25) ? subtotalCalculo * 0.10 : 0.0;
+    double subtotalReal = subtotalCalculo - calculodesc;
+    double iva = subtotalReal * 0.16;
+    double totalReal = subtotalReal + iva;
 
-       
-       usoCFDI = mvFactura.getFormaPago();
-       
-       DatosFactura df = new DatosFactura(uuid, numeroCertificado, fecha, nombreCliente, rfCliente, direccionCliente, ciudadEstadoCp, telefono, productos, totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total );
-       GeneradorFacturaPDF gf = new GeneradorFacturaPDF();
-       gf.generarFactura(df);
-   }
-    
-     private void generarNota() throws SQLException{   
-       String fecha;
-       List<String[]> productos = new ArrayList<>();;
-       String totalLetra;
-       String usoCFDI;
-       String tipoPersona = "PERSONA FISICA";
-       String subtotal;
-       String descuento;
-       String impuestos;
-       String total;
-       
-       LocalDate fechaActual = LocalDate.now();
-       LocalTime horaActual = LocalTime.now();
+    subtotal = String.format("%.2f", subtotalCalculo);
+    descuento = String.format("%.2f", calculodesc);
+    impuestos = String.format("%.2f", iva);
+    total = String.format("%.2f", totalReal);
+    totalLetra = NumeroALetras.convertir(totalReal);
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    usoCFDI = manejoventas.obtenerVentaPorId(idVenta).getFormaPago();
 
-        fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
-       
-       
-       List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+    DatosFactura df = new DatosFactura(
+        uuid, numeroCertificado, fecha, nombreCliente, rfCliente,
+        direccionCliente, ciudadEstadoCp, telefono, productos,
+        totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total
+    );
 
-       for (MostrarProducto producto : prodFac) {
-            float cantidad = producto.getCantidadVendida();
-            String unidad = producto.getUnidadMedida();
-            String descripcion = producto.getDescripcion();
-            float costo = producto.getCostoVenta();
-            float importe = cantidad * costo;
+    GeneradorFacturaPDF gf = new GeneradorFacturaPDF();
+    gf.generarFactura(df);
+}
+private void generarNota() throws SQLException {
+    String fecha;
+    List<String[]> productos = new ArrayList<>();
+    String totalLetra;
+    String usoCFDI;
+    String tipoPersona = "PERSONA FISICA";
+    String subtotal;
+    String descuento;
+    String impuestos;
+    String total;
 
-            String[] fila = new String[] {
-                String.valueOf(cantidad),
-                unidad,
-                descripcion,
-                String.format("%.2f", costo),
-                String.format("%.2f", importe)
-            };
+    LocalDate fechaActual = LocalDate.now();
+    LocalTime horaActual = LocalTime.now();
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
 
+    List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+    double subtotalCalculo = 0.0;
+
+    for (MostrarProducto producto : prodFac) {
+        float cantidad = producto.getCantidadVendida();  // No redondear
+        String unidad = producto.getUnidadMedida();
+        String descripcion = producto.getDescripcion();
+        float costo = producto.getCostoVenta();
+        float importe = cantidad * costo;
+
+        subtotalCalculo += importe;
+
+        String[] fila = new String[] {
+            String.format("%.2f", cantidad),
+            unidad,
+            descripcion,
+            String.format("%.2f", costo),
+            String.format("%.2f", importe)
+        };
         productos.add(fila);
-        }
+    }
 
-       MostrarVentas mvFactura = manejoventas.obtenerVentaPorId(idVenta);
-       Double iva;
-       Double sbtl;
-       Double calculodesc; 
-       
-        
-            calculodesc = 0.00;
-            Double Totalreal = mvFactura.getMonto();
-            iva = mvFactura.getMonto() * (0.16 / (1 + 0.16));
-            sbtl = mvFactura.getMonto() - iva;
-            subtotal = String.format("%.2f", sbtl); // Formatear a 2 decimales
-            descuento = String.format("%.2f", calculodesc); // Formatear a 2 decimales
-            impuestos = String.format("%.2f", iva); // Formatear a 2 decimales
-            total = String.format("%.2f", Totalreal); // Formatear a 2 decimales
-            totalLetra = NumeroALetras.convertir(Totalreal);
-        
+    // No hay descuento en nota
+    double calculodesc = 0.0;
+    double subtotalReal = subtotalCalculo - calculodesc;
+    double iva = subtotalReal * 0.16;
+    double totalReal = subtotalReal + iva;
 
-       
-       usoCFDI = mvFactura.getFormaPago();
-       
-       DatosNota df = new DatosNota(fecha, productos, totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total );
-       GenerarNotaPedido gf = new GenerarNotaPedido();
-       gf.generarNota(df);
-   }
-    
+    subtotal = String.format("%.2f", subtotalCalculo);
+    descuento = String.format("%.2f", calculodesc);
+    impuestos = String.format("%.2f", iva);
+    total = String.format("%.2f", totalReal);
+    totalLetra = NumeroALetras.convertir(totalReal);
+
+    usoCFDI = manejoventas.obtenerVentaPorId(idVenta).getFormaPago();
+
+    DatosNota df = new DatosNota(
+        fecha, productos, totalLetra, usoCFDI,
+        tipoPersona, subtotal, descuento, impuestos, total
+    );
+
+    GenerarNotaPedido gf = new GenerarNotaPedido();
+    gf.generarNota(df);
+}
+
     
     public void setListaIDsInventario(JList<Integer> listaIDs) {
     this.lstID = listaIDs;

@@ -1013,7 +1013,7 @@ try {
                 }
     }//GEN-LAST:event_txtNumeroKeyTyped
 
-  private void generarFactura() throws SQLException {
+private void generarFactura() throws SQLException {
     String uuid = "755AD17E-C125-43CE-B4B7-738AFC3A5FBB";
     String numeroCertificado = "20001000000100005868";
     String fecha;
@@ -1030,38 +1030,37 @@ try {
     String descuento;
     String impuestos;
     String total;
-    
-    // Obtener fecha y hora actual
+
+    // Fecha y hora
     LocalDate fechaActual = LocalDate.now();
     LocalTime horaActual = LocalTime.now();
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
-    
-    // Obtener datos del cliente
+
+    // Datos cliente
     Cliente cliFac = manejoclientes.buscarClientePorIdFactura(idCliente);
-    nombreCliente = cliFac.getNombre()+" "+cliFac.getaPaterno()+" "+cliFac.getaMaterno();
+    nombreCliente = cliFac.getNombre() + " " + cliFac.getaPaterno() + " " + cliFac.getaMaterno();
     rfCliente = cliFac.getRfc();
     direccionCliente = cliFac.getDireccion();
     ciudadEstadoCp = cliFac.getColEstCP();
     telefono = cliFac.getNumero();
-    
-    // Obtener productos de la venta y calcular subtotal
+
+    // Productos
     List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
     double subtotalCalculo = 0.0;
-    
+
     for (MostrarProducto producto : prodFac) {
-        float cantidad = producto.getCantidadVendida();
+        int cantidad = Math.round(producto.getCantidadVendida()); // Redondear
         String unidad = producto.getUnidadMedida();
         String descripcion = producto.getDescripcion();
         float costo = producto.getCostoVenta();
         float importe = cantidad * costo;
-        
-        // Acumular el subtotal (precio sin IVA)
+
         subtotalCalculo += importe;
 
         String[] fila = new String[] {
-            String.valueOf(cantidad)+"000",
+            String.valueOf(cantidad),
             unidad,
             descripcion,
             String.format("%.2f", costo),
@@ -1070,104 +1069,94 @@ try {
         productos.add(fila);
     }
 
-    // Calcular impuestos y totales
-    double ivaCalculo = subtotalCalculo * 0.16; // IVA del 16%
+    // IVA y descuento
+    double ivaCalculo = subtotalCalculo * 0.16;
     double totalCalculo = subtotalCalculo + ivaCalculo;
     double descuentoCalculo = 0.0;
 
-    // Aplicar descuento si el cliente tiene más de 25 compras
     if (cliFac.getNumeroCompras() > 25) {
-        // Ejemplo: 10% de descuento sobre el total
         descuentoCalculo = totalCalculo * 0.10;
         totalCalculo -= descuentoCalculo;
     }
 
-    // Formatear valores para la factura
+    // Formatos finales
     subtotal = String.format("%.2f", subtotalCalculo);
     impuestos = String.format("%.2f", ivaCalculo);
     descuento = String.format("%.2f", descuentoCalculo);
     total = String.format("%.2f", totalCalculo);
     totalLetra = NumeroALetras.convertir(totalCalculo);
-    
+
     usoCFDI = manejoventas.obtenerVentaPorId(idVenta).getFormaPago();
-    
-    // Crear y generar la factura
+
     DatosFactura df = new DatosFactura(
         uuid, numeroCertificado, fecha, nombreCliente, rfCliente, 
         direccionCliente, ciudadEstadoCp, telefono, productos, 
-        totalLetra, usoCFDI, tipoPersona, subtotal, descuento, 
-        impuestos, total
+        totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total
     );
-    
+
     GeneradorFacturaPDF gf = new GeneradorFacturaPDF();
     gf.generarFactura(df);
 }
+
     
-    
-    private void generarNota() throws SQLException{   
-       String fecha;
-       List<String[]> productos = new ArrayList<>();;
-       String totalLetra;
-       String usoCFDI;
-       String tipoPersona = "PERSONA FISICA";
-       String subtotal;
-       String descuento;
-       String impuestos;
-       String total;
-       
-       LocalDate fechaActual = LocalDate.now();
-       LocalTime horaActual = LocalTime.now();
+private void generarNota() throws SQLException {
+    String fecha;
+    List<String[]> productos = new ArrayList<>();
+    String totalLetra;
+    String usoCFDI;
+    String tipoPersona = "PERSONA FISICA";
+    String subtotal;
+    String descuento;
+    String impuestos;
+    String total;
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    LocalDate fechaActual = LocalDate.now();
+    LocalTime horaActual = LocalTime.now();
 
-        fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
-       
-       
-       List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-       for (MostrarProducto producto : prodFac) {
-            float cantidad = producto.getCantidadVendida();
-            String unidad = producto.getUnidadMedida();
-            String descripcion = producto.getDescripcion();
-            float costo = producto.getCostoVenta();
-            float importe = cantidad * costo;
+    fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
 
-            String[] fila = new String[] {
-                String.valueOf(cantidad),
-                unidad,
-                descripcion,
-                String.format("%.2f", costo),
-                String.format("%.2f", importe)
-            };
+    List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+    double subtotalCalculo = 0.0;
 
+    for (MostrarProducto producto : prodFac) {
+        int cantidad = Math.round(producto.getCantidadVendida()); // Redondear
+        String unidad = producto.getUnidadMedida();
+        String descripcion = producto.getDescripcion();
+        float costo = producto.getCostoVenta();
+        float importe = cantidad * costo;
+
+        subtotalCalculo += importe;
+
+        String[] fila = new String[] {
+            String.valueOf(cantidad),
+            unidad,
+            descripcion,
+            String.format("%.2f", costo),
+            String.format("%.2f", importe)
+        };
         productos.add(fila);
-        }
+    }
 
-       MostrarVentas mvFactura = manejoventas.obtenerVentaPorId(idVenta);
-       Double iva;
-       Double sbtl;
-       Double calculodesc; 
-       
-        
-            calculodesc = 0.00;
-            Double Totalreal = mvFactura.getMonto();
-            iva = mvFactura.getMonto() * (0.16 / (1 + 0.16));
-            sbtl = mvFactura.getMonto() - iva;
-            subtotal = String.format("%.2f", sbtl); // Formatear a 2 decimales
-            descuento = String.format("%.2f", calculodesc); // Formatear a 2 decimales
-            impuestos = String.format("%.2f", iva); // Formatear a 2 decimales
-            total = String.format("%.2f", Totalreal); // Formatear a 2 decimales
-            totalLetra = NumeroALetras.convertir(Totalreal);
-        
+    double ivaCalculo = subtotalCalculo * 0.16;
+    double totalCalculo = subtotalCalculo + ivaCalculo;
+    double descuentoCalculo = 0.0;
 
-       
-       usoCFDI = mvFactura.getFormaPago();
-       
-       DatosNota df = new DatosNota(fecha, productos, totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total );
-       GenerarNota gf = new GenerarNota();
-       gf.generarNota(df);
-   }
+    subtotal = String.format("%.2f", subtotalCalculo);
+    descuento = String.format("%.2f", descuentoCalculo);
+    impuestos = String.format("%.2f", ivaCalculo);
+    total = String.format("%.2f", totalCalculo);
+    totalLetra = NumeroALetras.convertir(totalCalculo);
+
+    usoCFDI = manejoventas.obtenerVentaPorId(idVenta).getFormaPago();
+
+    DatosNota df = new DatosNota(fecha, productos, totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total);
+    GenerarNota gf = new GenerarNota();
+    gf.generarNota(df);
+}
+
     
     public void setListaIDsInventario(JList<Integer> listaIDs) {
     this.lstID = listaIDs;
