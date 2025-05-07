@@ -39,7 +39,7 @@ CREATE TABLE `detalle_venta` (
 
 LOCK TABLES `detalle_venta` WRITE;
 /*!40000 ALTER TABLE `detalle_venta` DISABLE KEYS */;
-INSERT INTO `detalle_venta` VALUES (1,1,5),(1,7,1),(2,2,5),(2,6,1),(3,3,5),(3,7,1),(4,4,5),(5,5,5),(5,6,1),(7,8,1),(9,8,1);
+INSERT INTO `detalle_venta` VALUES (1,1,5),(1,7,1),(2,2,5),(2,6,1),(3,3,5),(3,7,1),(4,4,5),(5,5,5),(5,6,1),(5,9,1),(5,10,1),(5,11,2),(7,8,1),(7,10,1),(7,11,1),(9,8,1),(9,10,1);
 /*!40000 ALTER TABLE `detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-06 14:00:18
+-- Dump completed on 2025-05-06 23:15:35

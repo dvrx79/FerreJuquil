@@ -29,6 +29,8 @@ CREATE TABLE `pedido` (
   `estado_pago` enum('pagado','pago contra entrega','cancelado','pendiente') DEFAULT 'pago contra entrega',
   `estado_envio` enum('Pendiente','enviado','entregado','cancelado') DEFAULT 'Pendiente',
   `fecha` date DEFAULT NULL,
+  `nombre_recibe` varchar(45) DEFAULT NULL COMMENT 'Persona que recibe el envio',
+  `fecha_entrega` date DEFAULT NULL,
   `id_venta` int DEFAULT NULL,
   PRIMARY KEY (`id_pedido`),
   KEY `id_venta` (`id_venta`),
@@ -42,7 +44,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES (1,5,120.00,'pagado','entregado','2025-04-06',2),(2,5,300.00,'pago contra entrega','Pendiente','2025-04-07',4),(3,5,400.00,'pagado','Pendiente','2025-04-08',5);
+INSERT INTO `pedido` VALUES (1,5,120.00,'pagado','entregado','2025-04-06','Juan Arteaga','2025-05-06',2),(2,5,300.00,'pago contra entrega','Pendiente','2025-04-07','Maria',NULL,4),(3,5,400.00,'pagado','Pendiente','2025-04-08','Jose M.',NULL,5);
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-06 23:15:34
+-- Dump completed on 2025-05-07  0:21:17

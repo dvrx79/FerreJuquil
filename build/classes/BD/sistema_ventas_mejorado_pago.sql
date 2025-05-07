@@ -31,7 +31,7 @@ CREATE TABLE `pago` (
   PRIMARY KEY (`id_pago`),
   KEY `id_metodo_pago` (`id_metodo_pago`),
   CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`id_metodo_pago`) REFERENCES `metodo_pago` (`id_metodo_pago`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` VALUES (1,100.00,'2025-04-06','completado',1),(2,200.00,'2025-04-07','pendiente',2),(3,300.00,'2025-04-08','completado',3),(4,400.00,'2025-04-09','pendiente',4),(5,500.00,'2025-04-10','completado',5),(6,28.00,'2025-04-28','pendiente',2),(7,27.00,'2025-05-06','completado',1),(8,41.67,'2025-05-06','completado',1);
+INSERT INTO `pago` VALUES (1,100.00,'2025-04-06','completado',1),(2,200.00,'2025-04-07','pendiente',2),(3,300.00,'2025-04-08','completado',3),(4,400.00,'2025-04-09','pendiente',4),(5,500.00,'2025-04-10','completado',5),(6,28.00,'2025-04-28','pendiente',2),(7,27.00,'2025-05-06','completado',1),(8,41.67,'2025-05-06','completado',1),(9,8.00,'2025-05-06','completado',1),(10,49.67,'2025-05-06','completado',1),(11,38.14,'2025-05-06','completado',1);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-06 14:00:19
+-- Dump completed on 2025-05-06 23:15:34
