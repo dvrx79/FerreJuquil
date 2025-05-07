@@ -287,8 +287,8 @@ public class ManejoVentas {
     }
    
    
-     public MostrarVentas obtenerVentaPorId(int idV) throws SQLException{
-         MostrarVentas venta = null;
+    public MostrarVentas obtenerVentaPorId(int idV) throws SQLException {
+    MostrarVentas venta = null;
     Connection con = Conexion.getConexion();
 
     if (con != null) {
@@ -298,47 +298,37 @@ public class ManejoVentas {
                 "v.monto_total AS monto, " +
                 "c.nombre_cliente AS nombre, " +
                 "c.numero AS numero_cliente, " +
-                //"p.tipo AS tipo_producto, " +
                 "mp.nombre AS metodo_pago, " +
                 "pago.estado AS estado_pago, " +        
                 "v.id_venta AS id_venta " +
                 "FROM VENTA AS v " +
-                //"INNER JOIN INVENTARIO AS inv ON dv.id_inventario = inv.id_inventario " +
-                //"INNER JOIN VENTA AS v ON dv.id_venta = v.id_venta " +
-                "INNER JOIN CLIENTE AS c ON v.id_cliente = c.id_cliente "+
-                "INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
+                "INNER JOIN CLIENTE AS c ON v.id_cliente = c.id_cliente " +
                 "INNER JOIN PAGO AS pago ON v.id_pago = pago.id_pago " +
                 "INNER JOIN METODO_PAGO AS mp ON pago.id_metodo_pago = mp.id_metodo_pago " +
                 "WHERE v.id_venta = ?"
                 )) {
-                stmt.setInt(1, idV);
+            stmt.setInt(1, idV);
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
+                if (rs.next()) {
                     int idVenta = rs.getInt("id_venta");
                     Date fecha = rs.getDate("fecha");
                     Double monto = rs.getDouble("monto");
-                    //String tipo = rs.getString("tipo_producto");
                     String metodoPago = rs.getString("metodo_pago");
                     String estPago = rs.getString("estado_pago");
                     String ncliente = rs.getString("nombre");
                     String numeroCliente = rs.getString("numero_cliente");
-                    String numC;
-                    if(numeroCliente == null){
-                        numC = "Sin numero";
-                    }else{
-                        numC = numeroCliente;
-                    }
+                    String numC = (numeroCliente == null) ? "Sin numero" : numeroCliente;
                     
-                    venta = new MostrarVentas(idVenta,fecha, monto, metodoPago, estPago, ncliente, numC);
-                    
+                    venta = new MostrarVentas(idVenta, fecha, monto, metodoPago, estPago, ncliente, numC);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e; // Relanza la excepción para manejo superior
         }
     }
     return venta;
-    }
+}
      
      
    public boolean actualizarEstadoPagoPorIdVenta(int id, String est) throws SQLException {
