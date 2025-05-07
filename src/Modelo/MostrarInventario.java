@@ -4,6 +4,8 @@
  */
 package Modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author joelmatadamas
@@ -16,11 +18,14 @@ public class MostrarInventario {
     private String codigo;
     private float precioCompra;
     private float preciVenta;
+    private Date ultimaActualizacion; // Nuevo campo para FEFO
 
     public MostrarInventario() {
     }
 
-    public MostrarInventario(String nombre, String tipo, String descripcion, int cantidad, String codigo, float precioCompra, float preciVenta) {
+    public MostrarInventario(String nombre, String tipo, String descripcion, 
+                           int cantidad, String codigo, float precioCompra, 
+                           float preciVenta, Date ultimaActualizacion) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.descripcion = descripcion;
@@ -28,7 +33,17 @@ public class MostrarInventario {
         this.codigo = codigo;
         this.precioCompra = precioCompra;
         this.preciVenta = preciVenta;
+        this.ultimaActualizacion = ultimaActualizacion;
     }
+    
+    public Date getUltimaActualizacion() {
+        return ultimaActualizacion;
+    }
+
+    public void setUltimaActualizacion(Date ultimaActualizacion) {
+        this.ultimaActualizacion = ultimaActualizacion;
+    }
+
 
     public String getNombre() {
         return nombre;

@@ -23,8 +23,11 @@ import Modelo.*;
 import ManejoTablas.*;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -44,17 +47,15 @@ public class Inventario extends javax.swing.JFrame {
     private ManejoInventario manejoinventario = new ManejoInventario();
     private MostrarInventario mostrarInv;
     private static int numlvl;
-    /**
-     * Creates new form vistaLogin
-     */
     
     public Inventario() {
         initComponents();
-//        configurarBusqueda();
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo6.png")).getImage());
         mostrarInv = null;
         tablaInventario.setRowHeight(30);
         panelTabla.getViewport().setBackground(Color.WHITE);
+        
+        // Configuración del encabezado de la tabla
         JTableHeader header = tablaInventario.getTableHeader();
         header.setFont(new Font("Century Gothic", Font.BOLD, 16));
         header.setBackground(new Color(0,0,0));
@@ -68,14 +69,15 @@ public class Inventario extends javax.swing.JFrame {
         hr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         tablaInventario.getTableHeader().setDefaultRenderer(hr);
         
-         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
+        // Configuración de las celdas de la tabla
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
+                                                         boolean isSelected, boolean hasFocus,
+                                                         int row, int column) {
                 Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                cell.setBackground(new Color(255, 255, 255)); // Color uniforme para todas las celdas
-                cell.setForeground(Color.BLACK); // Texto en negro
+                cell.setBackground(new Color(255, 255, 255));
+                cell.setForeground(Color.BLACK);
                 return cell;
             }
         };
@@ -86,19 +88,16 @@ public class Inventario extends javax.swing.JFrame {
         }
         
         quitabordes();
-        
-        
     }
     
-
-    public void cargarDatos(int btn){
-         List<MostrarInventario> listaInventario1;
-        if(btn == 1){
-            try{
-                listaInventario1 = manejoinventario.obtenerInventario();
+    public void cargarDatos(int btn) {
+        List<MostrarInventario> listaInventario1;
+        if(btn == 1) {
+            try {
+                listaInventario1 = manejoinventario.obtenerInventarioFEFO(); // Cambiado a obtenerInventarioFEFO()
                 DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
                 modelo.setRowCount(0);
-                for(MostrarInventario mi: listaInventario1){
+                for(MostrarInventario mi: listaInventario1) {
                     Object[] fila = {
                         mi.getNombre(),
                         mi.getTipo(),
@@ -106,18 +105,22 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCantidad(),
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
-                        "$ "+mi.getPreciVenta()
+                        "$ "+mi.getPreciVenta(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion()) // Nueva columna para fecha
                     };
                     modelo.addRow(fila);
                 }
-                ordenarTablaAlfabeticamente(modelo);
-            }catch(SQLException e){}
-        }else if(btn == 2){
-            try{
+                ordenarTablaPorFecha(modelo); // Ordenar por fecha en lugar de alfabéticamente
+            } catch(SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al cargar el inventario: " + e.getMessage());
+            }
+        } else if(btn == 2) {
+            try {
                 listaInventario1 = manejoinventario.obtenerMenor(30);
                 DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
                 modelo.setRowCount(0);
-                for(MostrarInventario mi: listaInventario1){
+                for(MostrarInventario mi: listaInventario1) {
                     Object[] fila = {
                         mi.getNombre(),
                         mi.getTipo(),
@@ -125,18 +128,21 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCantidad(),
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
-                        "$ "+mi.getPreciVenta()
+                        "$ "+mi.getPreciVenta(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
                     };
                     modelo.addRow(fila);
                 }
-                ordenarTabla(modelo);
-            }catch(SQLException e){}
-        }else if(btn == 3){
-            try{
+                ordenarTablaPorFecha(modelo);
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        } else if(btn == 3) {
+            try {
                 listaInventario1 = manejoinventario.obtenerMayor(200);
                 DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
                 modelo.setRowCount(0);
-                for(MostrarInventario mi: listaInventario1){
+                for(MostrarInventario mi: listaInventario1) {
                     Object[] fila = {
                         mi.getNombre(),
                         mi.getTipo(),
@@ -144,18 +150,21 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCantidad(),
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
-                        "$ "+mi.getPreciVenta()
+                        "$ "+mi.getPreciVenta(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
                     };
                     modelo.addRow(fila);
                 }
-                ordenarTabla(modelo);
-            }catch(SQLException e){}
-        }else if(btn == 4){
-             try{
+                ordenarTablaPorFecha(modelo);
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        } else if(btn == 4) {
+            try {
                 listaInventario1 = manejoinventario.obtenerPorTipo("Construcción");
                 DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
                 modelo.setRowCount(0);
-                for(MostrarInventario mi: listaInventario1){
+                for(MostrarInventario mi: listaInventario1) {
                     Object[] fila = {
                         mi.getNombre(),
                         mi.getTipo(),
@@ -163,17 +172,21 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCantidad(),
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
-                        "$ "+mi.getPreciVenta()
+                        "$ "+mi.getPreciVenta(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
                     };
                     modelo.addRow(fila);
                 }
-            }catch(SQLException e){}
-        }else if(btn == 5){
-             try{
+                ordenarTablaPorFecha(modelo);
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        } else if(btn == 5) {
+            try {
                 listaInventario1 = manejoinventario.obtenerPorTipo("Ferreteria");
                 DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
                 modelo.setRowCount(0);
-                for(MostrarInventario mi: listaInventario1){
+                for(MostrarInventario mi: listaInventario1) {
                     Object[] fila = {
                         mi.getNombre(),
                         mi.getTipo(),
@@ -181,43 +194,73 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCantidad(),
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
-                        "$ "+mi.getPreciVenta()
+                        "$ "+mi.getPreciVenta(),
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
                     };
                     modelo.addRow(fila);
                 }
-            }catch(SQLException e){}
+                ordenarTablaPorFecha(modelo);
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     
-    
-    public void buscarProducto(){
-        if(txtBuscarCodigo.getText().isEmpty() || txtBuscarCodigo.getText().equals("Ingresa el codigo del producto")){
+    public void buscarProducto() {
+        if(txtBuscarCodigo.getText().isEmpty() || txtBuscarCodigo.getText().equals("Ingresa el codigo del producto")) {
             JOptionPane.showMessageDialog(null, "Ingresa un Codigo");
             txtBuscarCodigo.setText("");
-            
-        }else{
+        } else {
             String codigo = txtBuscarCodigo.getText();
-            try{
-                   mostrarInv = manejoinventario.obtenerPorCodigo(codigo);
-            }catch(SQLException ex){}
+            try {
+                mostrarInv = manejoinventario.obtenerPorCodigo(codigo);
+            } catch(SQLException ex) {
+                ex.printStackTrace();
+            }
         
-        
-        if(mostrarInv != null){
-        DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
-            modelo.setRowCount(0); 
+            if(mostrarInv != null) {
+                DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
+                modelo.setRowCount(0); 
                 Object[] fila = {
-                mostrarInv.getNombre(),
-                mostrarInv.getTipo(),
-                mostrarInv.getDescripcion(),
-                mostrarInv.getCantidad(),
-                mostrarInv.getCodigo(),
-                "$ "+mostrarInv.getPrecioCompra(),
-                "$ "+mostrarInv.getPreciVenta()
-            };
+                    mostrarInv.getNombre(),
+                    mostrarInv.getTipo(),
+                    mostrarInv.getDescripcion(),
+                    mostrarInv.getCantidad(),
+                    mostrarInv.getCodigo(),
+                    "$ "+mostrarInv.getPrecioCompra(),
+                    "$ "+mostrarInv.getPreciVenta(),
+                    new SimpleDateFormat("dd/MM/yyyy").format(mostrarInv.getUltimaActualizacion())
+                };
                 modelo.addRow(fila);
-        }else{
-            JOptionPane.showMessageDialog(this, "Producto no encontrado");
-        }}
+            } else {
+                JOptionPane.showMessageDialog(this, "Producto no encontrado");
+            }
+        }
+    }
+    
+    private void ordenarTablaPorFecha(DefaultTableModel modelo) {
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        
+        sorter.setComparator(7, new Comparator<Object>() { // Columna 7 es la fecha
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            
+            @Override
+            public int compare(Object o1, Object o2) {
+                try {
+                    Date date1 = dateFormat.parse(o1.toString());
+                    Date date2 = dateFormat.parse(o2.toString());
+                    return date1.compareTo(date2); // Orden ascendente (más antiguo primero)
+                } catch (ParseException e) {
+                    return 0;
+                }
+            }
+        });
+        
+        tablaInventario.setRowSorter(sorter);
+        List<RowSorter.SortKey> orden = new ArrayList<>();
+        orden.add(new RowSorter.SortKey(7, SortOrder.ASCENDING)); // Ordenar por fecha (columna 7)
+        sorter.setSortKeys(orden);
+        sorter.sort();
     }
     
     
@@ -1064,11 +1107,11 @@ public class Inventario extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Tipo", "Descripción", "Cantidad", "Codigo", "Precio a Compra", "Precio a Venta"
+                "Nombre", "Tipo", "Descripción", "Cantidad", "Codigo", "Precio a Compra", "Precio a Venta", "Fecha de ingreso"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
