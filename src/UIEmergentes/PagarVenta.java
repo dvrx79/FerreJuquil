@@ -792,16 +792,18 @@ try {
             if (lblCliente.getText().equals("-")) {
                 JOptionPane.showMessageDialog(null, "Selecciona un cliente para facturar");
             } else {
-                JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Se ha generado la factura en la carpeta FACTURAS dentro del escritorio");
+                JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Se ha generado la factura en la carpeta FACTURAS dentro del escritorio, y la nota en ela carpeta Notas de Ventas");
                 
                 hacerVenta(); // Llamada a hacerVenta después de generar la factura (si es necesario)
+                generarNota();
                 generarFactura();
                 aceptado = true;
                 this.dispose();
             }
         } else {
             hacerVenta();
-            JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente");
+            generarNota();
+            JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Nota guardada en la carpeta Notas de ventas en el escritorio");
             aceptado = true;
             this.dispose();
         } 
@@ -814,6 +816,7 @@ try {
                 JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Se ha generado la factura en la carpeta FACTURAS dentro del escritorio");
                 
                 hacerVentaBancaria();
+                generarNota();
                 generarFactura();
                 aceptado = true;
                 this.dispose();
@@ -821,7 +824,8 @@ try {
         } else {
             if((!txtNombre2.getText().equals("Ingresa un nombre") && !txtNombre2.getText().isEmpty()) && (!txtNumero.getText().equals("Ingresa un numero") && !txtNumero.getText().isEmpty())){
             hacerVentaBancaria();
-            JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente");
+            generarNota();
+            JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Nota guardad en la carpeta Notas de ventas en el escritorio");
             aceptado = true;
             this.dispose();}else{
                 JOptionPane.showMessageDialog(null, "Rellena todos los campos");
@@ -1100,7 +1104,70 @@ try {
 }
     
     
-    
+    private void generarNota() throws SQLException{   
+       String fecha;
+       List<String[]> productos = new ArrayList<>();;
+       String totalLetra;
+       String usoCFDI;
+       String tipoPersona = "PERSONA FISICA";
+       String subtotal;
+       String descuento;
+       String impuestos;
+       String total;
+       
+       LocalDate fechaActual = LocalDate.now();
+       LocalTime horaActual = LocalTime.now();
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
+       
+       
+       List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+
+       for (MostrarProducto producto : prodFac) {
+            float cantidad = producto.getCantidadVendida();
+            String unidad = producto.getUnidadMedida();
+            String descripcion = producto.getDescripcion();
+            float costo = producto.getCostoVenta();
+            float importe = cantidad * costo;
+
+            String[] fila = new String[] {
+                String.valueOf(cantidad),
+                unidad,
+                descripcion,
+                String.format("%.2f", costo),
+                String.format("%.2f", importe)
+            };
+
+        productos.add(fila);
+        }
+
+       MostrarVentas mvFactura = manejoventas.obtenerVentaPorId(idVenta);
+       Double iva;
+       Double sbtl;
+       Double calculodesc; 
+       
+        
+            calculodesc = 0.00;
+            Double Totalreal = mvFactura.getMonto();
+            iva = mvFactura.getMonto() * (0.16 / (1 + 0.16));
+            sbtl = mvFactura.getMonto() - iva;
+            subtotal = String.format("%.2f", sbtl); // Formatear a 2 decimales
+            descuento = String.format("%.2f", calculodesc); // Formatear a 2 decimales
+            impuestos = String.format("%.2f", iva); // Formatear a 2 decimales
+            total = String.format("%.2f", Totalreal); // Formatear a 2 decimales
+            totalLetra = NumeroALetras.convertir(Totalreal);
+        
+
+       
+       usoCFDI = mvFactura.getFormaPago();
+       
+       DatosNota df = new DatosNota(fecha, productos, totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total );
+       GenerarNota gf = new GenerarNota();
+       gf.generarNota(df);
+   }
     
     public void setListaIDsInventario(JList<Integer> listaIDs) {
     this.lstID = listaIDs;

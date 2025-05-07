@@ -729,14 +729,14 @@ public class PagarPedido extends javax.swing.JDialog {
                 try {
                     if(sel.equals("Efectivo")){
                         hacerPedidoContraEntregaEfectivo();
-
-                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente");
+                        generarNota();
+                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardad en la carpeta Nota de ventas dentro del escritorio");
                         aceptado = true;
                         this.dispose();
                     }else{
                         hacerPedidoContraEntregaBancario();
-            
-                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente");
+                        generarNota();
+                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardad en la carpeta Nota de ventas dentro del escritorio");
                         aceptado = true;
                         this.dispose();
                     }
@@ -840,14 +840,14 @@ public class PagarPedido extends javax.swing.JDialog {
                 try {
                     if(sel.equals("Efectivo")){
                         hacerPedido();
-
-                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente");
+                        generarNota();
+                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardad en la carpeta Nota de ventas dentro del escritorio");
                         aceptado = true;
                         this.dispose();
                     }else{
                         hacerPedidoBancaria();
-            
-                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente");
+                        generarNota();
+                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardad en la carpeta Nota de ventas dentro del escritorio");
                         aceptado = true;
                         this.dispose();
                     }
@@ -948,6 +948,71 @@ public class PagarPedido extends javax.swing.JDialog {
        DatosFactura df = new DatosFactura(uuid, numeroCertificado, fecha, nombreCliente, rfCliente, direccionCliente, ciudadEstadoCp, telefono, productos, totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total );
        GeneradorFacturaPDF gf = new GeneradorFacturaPDF();
        gf.generarFactura(df);
+   }
+    
+     private void generarNota() throws SQLException{   
+       String fecha;
+       List<String[]> productos = new ArrayList<>();;
+       String totalLetra;
+       String usoCFDI;
+       String tipoPersona = "PERSONA FISICA";
+       String subtotal;
+       String descuento;
+       String impuestos;
+       String total;
+       
+       LocalDate fechaActual = LocalDate.now();
+       LocalTime horaActual = LocalTime.now();
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        fecha = fechaActual.format(dateFormatter) + " " + horaActual.format(timeFormatter);
+       
+       
+       List<MostrarProducto> prodFac = manejoproductos.ObtenerProductosPorDetalleVenta(idVenta);
+
+       for (MostrarProducto producto : prodFac) {
+            float cantidad = producto.getCantidadVendida();
+            String unidad = producto.getUnidadMedida();
+            String descripcion = producto.getDescripcion();
+            float costo = producto.getCostoVenta();
+            float importe = cantidad * costo;
+
+            String[] fila = new String[] {
+                String.valueOf(cantidad),
+                unidad,
+                descripcion,
+                String.format("%.2f", costo),
+                String.format("%.2f", importe)
+            };
+
+        productos.add(fila);
+        }
+
+       MostrarVentas mvFactura = manejoventas.obtenerVentaPorId(idVenta);
+       Double iva;
+       Double sbtl;
+       Double calculodesc; 
+       
+        
+            calculodesc = 0.00;
+            Double Totalreal = mvFactura.getMonto();
+            iva = mvFactura.getMonto() * (0.16 / (1 + 0.16));
+            sbtl = mvFactura.getMonto() - iva;
+            subtotal = String.format("%.2f", sbtl); // Formatear a 2 decimales
+            descuento = String.format("%.2f", calculodesc); // Formatear a 2 decimales
+            impuestos = String.format("%.2f", iva); // Formatear a 2 decimales
+            total = String.format("%.2f", Totalreal); // Formatear a 2 decimales
+            totalLetra = NumeroALetras.convertir(Totalreal);
+        
+
+       
+       usoCFDI = mvFactura.getFormaPago();
+       
+       DatosNota df = new DatosNota(fecha, productos, totalLetra, usoCFDI, tipoPersona, subtotal, descuento, impuestos, total );
+       GenerarNotaPedido gf = new GenerarNotaPedido();
+       gf.generarNota(df);
    }
     
     
