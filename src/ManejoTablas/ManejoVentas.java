@@ -37,7 +37,7 @@ public class ManejoVentas {
                 //"INNER JOIN INVENTARIO AS inv ON dv.id_inventario = inv.id_inventario " +
                 //"INNER JOIN VENTA AS v ON dv.id_venta = v.id_venta " +
                 "INNER JOIN CLIENTE AS c ON v.id_cliente = c.id_cliente "+
-                "INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
+                //"INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
                 "INNER JOIN PAGO AS pago ON v.id_pago = pago.id_pago " +
                 "INNER JOIN METODO_PAGO AS mp ON pago.id_metodo_pago = mp.id_metodo_pago "  
                 )) {
@@ -90,7 +90,7 @@ public class ManejoVentas {
                 //"INNER JOIN INVENTARIO AS inv ON dv.id_inventario = inv.id_inventario " +
                 //"INNER JOIN VENTA AS v ON dv.id_venta = v.id_venta " +
                 "INNER JOIN CLIENTE AS c ON v.id_cliente = c.id_cliente "+
-                "INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
+                //"INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
                 "INNER JOIN PAGO AS pago ON v.id_pago = pago.id_pago " +
                 "INNER JOIN METODO_PAGO AS mp ON pago.id_metodo_pago = mp.id_metodo_pago " +
                 "WHERE mp.nombre = ?"
@@ -143,7 +143,7 @@ public class ManejoVentas {
                 //"INNER JOIN INVENTARIO AS inv ON dv.id_inventario = inv.id_inventario " +
                 //"INNER JOIN VENTA AS v ON dv.id_venta = v.id_venta " +
                 "INNER JOIN CLIENTE AS c ON v.id_cliente = c.id_cliente "+
-                "INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
+                //"INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
                 "INNER JOIN PAGO AS pago ON v.id_pago = pago.id_pago " +
                 "INNER JOIN METODO_PAGO AS mp ON pago.id_metodo_pago = mp.id_metodo_pago " +
                 "WHERE p.tipo = ?"
@@ -197,7 +197,7 @@ public class ManejoVentas {
                 //"INNER JOIN INVENTARIO AS inv ON dv.id_inventario = inv.id_inventario " +
                 //"INNER JOIN VENTA AS v ON dv.id_venta = v.id_venta " +
                 "INNER JOIN CLIENTE AS c ON v.id_cliente = c.id_cliente "+
-                "INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
+                //"INNER JOIN PRODUCTO AS p ON inv.id_producto = p.id_producto " +
                 "INNER JOIN PAGO AS pago ON v.id_pago = pago.id_pago " +
                 "INNER JOIN METODO_PAGO AS mp ON pago.id_metodo_pago = mp.id_metodo_pago " +
                 "WHERE mp.nombre != ?"

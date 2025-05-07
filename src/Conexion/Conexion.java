@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class Conexion {
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/sistema_ventas_mejorado"; // URL de la base de datos
     private static final String USER = "root"; // Usuario de la base de datos
-    private static final String PASSWORD = "Y43l4gu5t1n"; // Contraseña de la base de datos
+    private static final String PASSWORD = "1234"; // Contraseña de la base de datos
     
     // Método para obtener la conexión
     public static Connection getConexion() throws SQLException {
