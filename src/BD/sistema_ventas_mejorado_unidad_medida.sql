@@ -26,7 +26,7 @@ CREATE TABLE `unidad_medida` (
   `id_unidad_medida` int NOT NULL AUTO_INCREMENT,
   `nombre_unidad` varchar(50) NOT NULL,
   PRIMARY KEY (`id_unidad_medida`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,7 +35,7 @@ CREATE TABLE `unidad_medida` (
 
 LOCK TABLES `unidad_medida` WRITE;
 /*!40000 ALTER TABLE `unidad_medida` DISABLE KEYS */;
-INSERT INTO `unidad_medida` VALUES (1,'pieza'),(2,'litro'),(3,'kilogramo'),(4,'metro'),(5,'paquete');
+INSERT INTO `unidad_medida` VALUES (1,'Pieza'),(2,'Litro'),(3,'Kilogramo'),(4,'Metro'),(5,'Paquete'),(6,'Tonelada'),(7,'Gramo'),(8,'Mililitro');
 /*!40000 ALTER TABLE `unidad_medida` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-06 14:00:19
+-- Dump completed on 2025-05-06 23:15:35
