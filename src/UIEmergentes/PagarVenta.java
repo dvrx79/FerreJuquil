@@ -804,7 +804,7 @@ try {
             JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente");
             aceptado = true;
             this.dispose();
-        }
+        } 
     } else { // Forma de pago bancaria
         
         if (debeFacturar) {

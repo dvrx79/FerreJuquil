@@ -243,7 +243,7 @@ id_provedor.setEditable(false);
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 540, -1, 20));
 
         id_medida.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
-        id_medida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pieza", "litro", "kilogramo", "metro", "paquete" }));
+        id_medida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pieza", "litro", "kilogramo", "metro", "paquete", "Tonelada ", "Gramo", "Mililitro", " " }));
         id_medida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         id_medida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -395,7 +395,7 @@ id_provedor.setEditable(false);
 
         jLabel16.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel16.setText("Generacion de precio de venta");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 390, -1, 20));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 400, -1, 20));
 
         pVenta.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
         pVenta.setForeground(new java.awt.Color(102, 102, 102));
