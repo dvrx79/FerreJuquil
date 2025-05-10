@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
+import javax.swing.ImageIcon; 
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -1039,7 +1039,7 @@ private void generarNota() throws SQLException {
         String valorStr = modeloListaCant.getElementAt(i).replace("-", "").replace(prod.getUnidadMedida(), "").replace("s", "").trim();
         int cantidad = Integer.parseInt(valorStr);
             hacerventa.insertarDetalleVenta(idInventario, idVen, cantidad);
-            boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen);
+            boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen, null, null); 
         System.out.println(idInventario+" "+idVen+" "+cantidad);
         if (!pedidoRealizado) {
             JOptionPane.showMessageDialog(null, "Error al insertar el pedido");
@@ -1072,7 +1072,7 @@ private void generarNota() throws SQLException {
         String valorStr = modeloListaCant.getElementAt(i).replace("-", "").replace(prod.getUnidadMedida(), "").replace("s", "").trim();
         int cantidad = Integer.parseInt(valorStr);
         hacerventa.insertarDetalleVenta(idInventario, idVen, cantidad);
-        boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen);
+        boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen, null, null); 
         System.out.println(idInventario+" "+idVen+" "+cantidad);
         if (!pedidoRealizado) {
             JOptionPane.showMessageDialog(null, "Error al insertar el pedido " );
@@ -1106,7 +1106,7 @@ private void generarNota() throws SQLException {
         String valorStr = modeloListaCant.getElementAt(i).replace("-", "").replace(prod.getUnidadMedida(), "").replace("s", "").trim();
         int cantidad = Integer.parseInt(valorStr);
         hacerventa.insertarDetalleVenta(idInventario, idVen, cantidad);
-        boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen);
+        boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen, null, null);
         System.out.println(idInventario+" "+idVen+" "+cantidad);
         if (!pedidoRealizado) {
             JOptionPane.showMessageDialog(null, "Error al insertar el pedido " );
@@ -1141,7 +1141,7 @@ private void generarNota() throws SQLException {
         String valorStr = modeloListaCant.getElementAt(i).replace("-", "").replace(prod.getUnidadMedida(), "").replace("s", "").trim();
         int cantidad = Integer.parseInt(valorStr);
         hacerventa.insertarDetalleVenta(idInventario, idVen, cantidad);
-        boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen);
+        boolean pedidoRealizado = manejopedidos.insertarPedido(cantidad, mt, est, "Pendiente", fechaBase, idVen, null, null); // o alguna fecha válida
         System.out.println(idInventario+" "+idVen+" "+cantidad);
         if (!pedidoRealizado) {
             JOptionPane.showMessageDialog(null, "Error al insertar el pedido " );

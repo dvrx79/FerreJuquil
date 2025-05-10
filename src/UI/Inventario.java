@@ -69,14 +69,37 @@ public class Inventario extends javax.swing.JFrame {
         hr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         tablaInventario.getTableHeader().setDefaultRenderer(hr);
         
-        // Configuración de las celdas de la tabla
+        // Configuración de las celdas de la tabla con resaltado para bajo stock
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
                                                          boolean isSelected, boolean hasFocus,
                                                          int row, int column) {
                 Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                cell.setBackground(new Color(255, 255, 255));
+                
+                // Obtener el modelo de la tabla
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                
+                try {
+                    // Verificar si la cantidad es menor que el stock mínimo (columna 3 vs columna 8)
+                    int cantidad = Integer.parseInt(model.getValueAt(row, 3).toString());
+                    int stockMinimo = Integer.parseInt(model.getValueAt(row, 8).toString());
+                    int advertencia = stockMinimo + 30;
+                    
+                    if (cantidad > stockMinimo && cantidad <= advertencia) {
+                        cell.setBackground(Color.YELLOW); // Rojo claro para bajo stock
+                    } 
+                    else if(cantidad <= stockMinimo){
+                        cell.setBackground(new Color(255, 200, 200)); // Rojo claro para bajo stock
+                    }
+                    else
+                   {
+                        cell.setBackground(Color.WHITE);
+                    }
+                } catch (Exception e) {
+                    cell.setBackground(Color.WHITE);
+                }
+                
                 cell.setForeground(Color.BLACK);
                 return cell;
             }
@@ -94,7 +117,7 @@ public class Inventario extends javax.swing.JFrame {
         List<MostrarInventario> listaInventario1;
         if(btn == 1) {
             try {
-                listaInventario1 = manejoinventario.obtenerInventarioFEFO(); // Cambiado a obtenerInventarioFEFO()
+                listaInventario1 = manejoinventario.obtenerInventarioFEFO();
                 DefaultTableModel modelo = (DefaultTableModel) tablaInventario.getModel();
                 modelo.setRowCount(0);
                 for(MostrarInventario mi: listaInventario1) {
@@ -106,11 +129,13 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
                         "$ "+mi.getPreciVenta(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion()) // Nueva columna para fecha
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion()),
+                        mi.getStockMinimo(), // Nueva columna para stock mínimo
+                        mi.estaBajoStockMinimo() ? "BAJO STOCK" : "OK" // Estado del stock
                     };
                     modelo.addRow(fila);
                 }
-                ordenarTablaPorFecha(modelo); // Ordenar por fecha en lugar de alfabéticamente
+                ordenarTablaPorFecha(modelo);
             } catch(SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error al cargar el inventario: " + e.getMessage());
@@ -129,7 +154,9 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
                         "$ "+mi.getPreciVenta(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion()),
+                        mi.getStockMinimo(),
+                        mi.estaBajoStockMinimo() ? "BAJO STOCK" : "OK"
                     };
                     modelo.addRow(fila);
                 }
@@ -151,7 +178,9 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
                         "$ "+mi.getPreciVenta(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion()),
+                        mi.getStockMinimo(),
+                        mi.estaBajoStockMinimo() ? "BAJO STOCK" : "OK"
                     };
                     modelo.addRow(fila);
                 }
@@ -173,7 +202,9 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
                         "$ "+mi.getPreciVenta(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion()),
+                        mi.getStockMinimo(),
+                        mi.estaBajoStockMinimo() ? "BAJO STOCK" : "OK"
                     };
                     modelo.addRow(fila);
                 }
@@ -195,7 +226,9 @@ public class Inventario extends javax.swing.JFrame {
                         mi.getCodigo(),
                         "$ "+mi.getPrecioCompra(),
                         "$ "+mi.getPreciVenta(),
-                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion())
+                        new SimpleDateFormat("dd/MM/yyyy").format(mi.getUltimaActualizacion()),
+                        mi.getStockMinimo(),
+                        mi.estaBajoStockMinimo() ? "BAJO STOCK" : "OK"
                     };
                     modelo.addRow(fila);
                 }
@@ -229,7 +262,9 @@ public class Inventario extends javax.swing.JFrame {
                     mostrarInv.getCodigo(),
                     "$ "+mostrarInv.getPrecioCompra(),
                     "$ "+mostrarInv.getPreciVenta(),
-                    new SimpleDateFormat("dd/MM/yyyy").format(mostrarInv.getUltimaActualizacion())
+                    new SimpleDateFormat("dd/MM/yyyy").format(mostrarInv.getUltimaActualizacion()),
+                    mostrarInv.getStockMinimo(),
+                    mostrarInv.estaBajoStockMinimo() ? "BAJO STOCK" : "OK"
                 };
                 modelo.addRow(fila);
             } else {
@@ -436,6 +471,7 @@ public class Inventario extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         btnP5 = new UI.PanelRound();
         jButton5 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1107,11 +1143,11 @@ public class Inventario extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Tipo", "Descripción", "Cantidad", "Codigo", "Precio a Compra", "Precio a Venta", "Fecha de ingreso"
+                "Nombre", "Tipo", "Descripción", "Cantidad", "Codigo", "Precio a Compra", "Precio a Venta", "Fecha de ingreso", "Stock Minimo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, false
+                false, false, false, false, false, false, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1327,6 +1363,17 @@ public class Inventario extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 63, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1336,8 +1383,11 @@ public class Inventario extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(panelTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 1149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panelRound2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(panelTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 1149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43))
+                            .addComponent(panelRound2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(73, 73, 73)
                         .addComponent(btnP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1346,8 +1396,10 @@ public class Inventario extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnP4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnP5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnP5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(72, 72, 72)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1356,13 +1408,14 @@ public class Inventario extends javax.swing.JFrame {
                 .addComponent(panelRound2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(panelTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnP1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnP4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnP5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnP1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnP2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnP4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnP5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -1372,7 +1425,7 @@ public class Inventario extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1402,7 +1455,7 @@ public class Inventario extends javax.swing.JFrame {
                     .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 1188, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 1220, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1983,6 +2036,7 @@ if (filaSeleccionada != -1) {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblLogo;
     private UI.PanelRound panelRound1;

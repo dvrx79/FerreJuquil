@@ -1,15 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
+
+import java.sql.Date;
 
 /**
  *
  * @author salin
  */
-import java.sql.*;
-
 public class MostrarPedido {
     private String estEntrega;
     private String estPago;
@@ -20,11 +16,16 @@ public class MostrarPedido {
     private String numero;
     private int idVenta;
     private int idPedido;
+    private String nombreRecibe;  // Nuevo campo
+    private Date fechaEntrega;      // Nuevo campo
 
     public MostrarPedido() {
     }
 
-    public MostrarPedido(String estEntrega, String estPago, Date fecha, Double monto, String direccion, String nombreCliente, String numero, int idVenta, int idPedido) {
+    // Constructor actualizado con los nuevos campos
+    public MostrarPedido(String estEntrega, String estPago, Date fecha, Double monto, 
+                        String direccion, String nombreCliente, String numero, 
+                        int idVenta, int idPedido, String nombreRecibe, Date fechaEntrega) {
         this.estEntrega = estEntrega;
         this.estPago = estPago;
         this.fecha = fecha;
@@ -34,8 +35,28 @@ public class MostrarPedido {
         this.numero = numero;
         this.idVenta = idVenta;
         this.idPedido = idPedido;
+        this.nombreRecibe=nombreRecibe;
+        this.fechaEntrega=fechaEntrega;
     }
 
+    // Getters y Setters para los nuevos campos
+    public String getNombreRecibe() {
+        return nombreRecibe;
+    }
+
+    public void setNombreRecibe(String nombreRecibe) {
+        this.nombreRecibe = nombreRecibe;
+    }
+
+    public Date getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(Date fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
+    // Resto de getters y setters (se mantienen igual)
     public int getIdPedido() {
         return idPedido;
     }
@@ -44,8 +65,6 @@ public class MostrarPedido {
         this.idPedido = idPedido;
     }
 
-    
-
     public String getNumero() {
         return numero;
     }
@@ -53,8 +72,6 @@ public class MostrarPedido {
     public void setNumero(String numero) {
         this.numero = numero;
     }
-
-    
 
     public int getIdVenta() {
         return idVenta;
@@ -111,7 +128,4 @@ public class MostrarPedido {
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
     }
-    
-    
-    
 }

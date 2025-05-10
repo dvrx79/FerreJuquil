@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package UI;
+package UI; 
 
 import Modelo.*;
 import ManejoTablas.*;
@@ -32,17 +28,11 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import java.sql.*;
 
-/**
- *
- * @author salin
- */
 public class Pedidos extends javax.swing.JFrame {
     private ManejoPedido manejopedidos = new ManejoPedido();
     private ManejoProductos manejoproductos = new ManejoProductos();
     private MostrarPedido pedidos;
-    /**
-     * Creates new form vistaLogin
-     */
+    
     public Pedidos() {
         initComponents();
         pedidos = null;
@@ -61,169 +51,94 @@ public class Pedidos extends javax.swing.JFrame {
         hr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         TablaPedidos.getTableHeader().setDefaultRenderer(hr);
         
-         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
+                                                       boolean isSelected, boolean hasFocus,
+                                                       int row, int column) {
                 Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                cell.setBackground(new Color(255, 255, 255)); // Color uniforme para todas las celdas
-                cell.setForeground(Color.BLACK); // Texto en negro
+                cell.setBackground(new Color(255, 255, 255));
+                cell.setForeground(Color.BLACK);
                 return cell;
             }
         };
 
-        // Aplicar el renderer a todas las columnas
         for (int i = 0; i < TablaPedidos.getColumnCount(); i++) {
             TablaPedidos.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
         
         quitabordes();
-        TablaPedidos.getColumnModel().getColumn(7).setMinWidth(0);
-        TablaPedidos.getColumnModel().getColumn(7).setMaxWidth(0);
-        TablaPedidos.getColumnModel().getColumn(7).setWidth(0);
-        TablaPedidos.getColumnModel().getColumn(8).setMinWidth(0);
-        TablaPedidos.getColumnModel().getColumn(8).setMaxWidth(0);
-        TablaPedidos.getColumnModel().getColumn(8).setWidth(0);
+        TablaPedidos.getColumnModel().getColumn(9).setMinWidth(0);
+       TablaPedidos.getColumnModel().getColumn(9).setMaxWidth(0);
+      TablaPedidos.getColumnModel().getColumn(9).setWidth(0);
+        TablaPedidos.getColumnModel().getColumn(10).setMinWidth(0);
+      TablaPedidos.getColumnModel().getColumn(10).setMaxWidth(0);
+       TablaPedidos.getColumnModel().getColumn(10).setWidth(0);
+
         TablaPedidos.getColumnModel().getColumn(2).setPreferredWidth(20);
         TablaPedidos.getColumnModel().getColumn(3).setPreferredWidth(35);
-        TablaPedidos.getColumnModel().getColumn(5).setPreferredWidth(200);
+        TablaPedidos.getColumnModel().getColumn(6).setPreferredWidth(200);
     }
     
-    public void cargarDatos(int n){
-        List<MostrarPedido> listaPedidos;   
-        if(n == 1){
-            try{
-                listaPedidos = manejopedidos.obtenerPedidos();
-                DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
-                modelo.setRowCount(0);
-                for(MostrarPedido mp: listaPedidos){
-                    Object[] fila = {
-                        mp.getEstEntrega(),
-                        mp.getEstPago(),
-                        mp.getFecha(),
-                        "$ "+mp.getMonto(),
-                        mp.getNombreCliente(),
-                        mp.getNumero(),
-                        mp.getDireccion(),
-                        mp.getIdVenta(),
-                        mp.getIdPedido()
-                    };
-                    modelo.addRow(fila);
-                }
-                ordenarTabla(modelo);
-                configurarColoresTabla();
-            }catch(SQLException e){}
-        }else if(n == 2){
-            try{
-                listaPedidos = manejopedidos.obtenerPedidosPorEstadoEntrega("Pendiente");
-                DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
-                modelo.setRowCount(0);
-                for(MostrarPedido mp: listaPedidos){
-                    Object[] fila = {
-                        mp.getEstEntrega(),
-                        mp.getEstPago(),
-                        mp.getFecha(),
-                        "$ "+mp.getMonto(),
-                        mp.getNombreCliente(),
-                        mp.getNumero(),
-                        mp.getDireccion(),
-                        mp.getIdVenta(),
-                        mp.getIdPedido()
-                    };
-                    modelo.addRow(fila);
-                }
-                ordenarTabla(modelo);
-                configurarColoresTabla();
-            }catch(SQLException e){}
-        }else if(n == 3){
-            try{
-                listaPedidos = manejopedidos.obtenerPedidosPorEstadoEntrega("entregado");
-                DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
-                modelo.setRowCount(0);
-                for(MostrarPedido mp: listaPedidos){
-                    Object[] fila = {
-                        mp.getEstEntrega(),
-                        mp.getEstPago(),
-                        mp.getFecha(),
-                        "$ "+mp.getMonto(),
-                        mp.getNombreCliente(),
-                        mp.getNumero(),
-                        mp.getDireccion(),
-                        mp.getIdVenta(),
-                        mp.getIdPedido()
-                    };
-                    modelo.addRow(fila);
-                }
-                ordenarTabla(modelo);
-                configurarColoresTabla();
-            }catch(SQLException e){}
-        }else if(n == 4){
-            try{
-                listaPedidos = manejopedidos.obtenerPedidosPorEstadoPago("pagado");
-                DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
-                modelo.setRowCount(0);
-                for(MostrarPedido mp: listaPedidos){
-                    Object[] fila = {
-                        mp.getEstEntrega(),
-                        mp.getEstPago(),
-                        mp.getFecha(),
-                        "$ "+mp.getMonto(),
-                        mp.getNombreCliente(),
-                        mp.getNumero(),
-                        mp.getDireccion(),
-                        mp.getIdVenta(),
-                        mp.getIdPedido()
-                    };
-                    modelo.addRow(fila);
-                }
-                ordenarTabla(modelo);
-                configurarColoresTabla();
-            }catch(SQLException e){}
-        }else if(n == 5){
-            try{
-                listaPedidos = manejopedidos.obtenerPedidosPorEstadoPago("pago contra entrega");
-                DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
-                modelo.setRowCount(0);
-                for(MostrarPedido mp: listaPedidos){
-                    Object[] fila = {
-                        mp.getEstEntrega(),
-                        mp.getEstPago(),
-                        mp.getFecha(),
-                        "$ "+mp.getMonto(),
-                        mp.getNombreCliente(),
-                        mp.getNumero(),
-                        mp.getDireccion(),
-                        mp.getIdVenta(),
-                        mp.getIdPedido()
-                    };
-                    modelo.addRow(fila);
-                }
-                ordenarTabla(modelo);
-                configurarColoresTabla();
-            }catch(SQLException e){}
+public void cargarDatos(int n) {
+    List<MostrarPedido> listaPedidos;   
+    try {
+        switch(n) {
+            case 1: listaPedidos = manejopedidos.obtenerPedidos(); break;
+            case 2: listaPedidos = manejopedidos.obtenerPedidosPorEstadoEntrega("Pendiente"); break;
+            case 3: listaPedidos = manejopedidos.obtenerPedidosPorEstadoEntrega("entregado"); break;
+            case 4: listaPedidos = manejopedidos.obtenerPedidosPorEstadoPago("pagado"); break;
+            case 5: listaPedidos = manejopedidos.obtenerPedidosPorEstadoPago("pago contra entrega"); break;
+            default: return;
         }
         
-              
-    }
+        DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
+        modelo.setRowCount(0);
+        
+        for(MostrarPedido mp: listaPedidos) {
+            Object[] fila = {
+                mp.getEstEntrega(),
+                mp.getEstPago(),
+                mp.getFecha(),
+                "$ "+mp.getMonto(),
+                mp.getNombreCliente(),
+                mp.getNumero(),
+                mp.getDireccion(),
+                mp.getNombreRecibe(),  // Nuevo campo
+                mp.getFechaEntrega(),  // Nuevo campo
+                mp.getIdVenta(),
+                mp.getIdPedido()
+            };
+            modelo.addRow(fila);
+        }
+        
+        ordenarTabla(modelo);
+        configurarColoresTabla();
+        
+    } catch(SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar pedidos: " + e.getMessage(), 
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }              
+}
     
-    private void ordenarTabla(DefaultTableModel modelo){
+    private void ordenarTabla(DefaultTableModel modelo) {
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
 
         sorter.setComparator(0, new Comparator<Object>() {
-        @Override
-        public int compare(Object o1, Object o2) {
-            String s1 = o1.toString();
-            String s2 = o2.toString();
-            
-            if (s1.equals("Pendiente") && !s2.equals("Pendiente")) {
-                return -1;
-            } else if (!s1.equals("Pendiente") && s2.equals("Pendiente")) {
-                return 1;
-            } else {
-                return s1.compareTo(s2); // orden alfabético normal si son iguales o distintos de "Pendiente"
+            @Override
+            public int compare(Object o1, Object o2) {
+                String s1 = o1.toString();
+                String s2 = o2.toString();
+                
+                if (s1.equals("Pendiente") && !s2.equals("Pendiente")) {
+                    return -1;
+                } else if (!s1.equals("Pendiente") && s2.equals("Pendiente")) {
+                    return 1;
+                } else {
+                    return s1.compareTo(s2);
+                }
             }
-           }
         });
 
         TablaPedidos.setRowSorter(sorter);
@@ -232,82 +147,90 @@ public class Pedidos extends javax.swing.JFrame {
         orden.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
         sorter.setSortKeys(orden);
         
-      sorter.sort();
+        sorter.sort();
     }
 
     private void configurarColoresTabla() {
-    TablaPedidos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus,
-                                                       int row, int column) {
-            Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        TablaPedidos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-            setHorizontalAlignment(SwingConstants.CENTER); // Centrar contenido
+                setHorizontalAlignment(SwingConstants.CENTER);
 
-            String estado = value != null ? value.toString() : "";
+                String estado = value != null ? value.toString() : "";
 
-            if ("entregado".equalsIgnoreCase(estado)) {
-                cell.setForeground(new Color(0, 153, 0)); // Verde
-            } else if ("Pendiente".equalsIgnoreCase(estado)) {
-                cell.setForeground(new Color(153, 0, 0)); // Rojo
-            } else {
-                cell.setForeground(Color.BLACK); // Otro
-            }
-
-            cell.setBackground(Color.WHITE); // Fondo blanco para todos
-            return cell;
-        }
-    });
-    
-     TablaPedidos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                                                       boolean isSelected, boolean hasFocus,
-                                                       int row, int column) {
-            Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-            setHorizontalAlignment(SwingConstants.CENTER); // Centrar contenido
-
-            String estado = value != null ? value.toString() : "";
-
-            if ("pagado".equalsIgnoreCase(estado)) {
-                cell.setForeground(new Color(0, 153, 0)); // Verde
-            } else if ("pago contra entrega".equalsIgnoreCase(estado)) {
-                cell.setForeground(new Color(0,51,204)); // Azul
-            } else {
-                cell.setForeground(Color.BLACK); // Otro
-            }
-
-            cell.setBackground(Color.WHITE); // Fondo blanco para todos
-            return cell;
-        }
-    });
-}
-    
-    private void buscarPedidosPorFecha(Date FE){
-            try{
-                List<MostrarPedido> listaPedidos = manejopedidos.obtenerPedidosPorFecha(FE);
-                DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
-                modelo.setRowCount(0);
-                for(MostrarPedido mp: listaPedidos){
-                    Object[] fila = {
-                        mp.getEstEntrega(),
-                        mp.getEstPago(),
-                        mp.getFecha(),
-                        "$ "+mp.getMonto(),
-                        mp.getNombreCliente(),
-                        mp.getNumero(),
-                        mp.getDireccion(),
-                        mp.getIdVenta(),
-                        mp.getIdPedido()
-                    };
-                    modelo.addRow(fila);
+                if ("entregado".equalsIgnoreCase(estado)) {
+                    cell.setForeground(new Color(0, 153, 0));
+                } else if ("Pendiente".equalsIgnoreCase(estado)) {
+                    cell.setForeground(new Color(153, 0, 0));
+                } else {
+                    cell.setForeground(Color.BLACK);
                 }
-                ordenarTabla(modelo);
-                configurarColoresTabla();
-            }catch(SQLException e){}
+
+                cell.setBackground(Color.WHITE);
+                return cell;
+            }
+        });
+        
+        TablaPedidos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                setHorizontalAlignment(SwingConstants.CENTER);
+
+                String estado = value != null ? value.toString() : "";
+
+                if ("pagado".equalsIgnoreCase(estado)) {
+                    cell.setForeground(new Color(0, 153, 0));
+                } else if ("pago contra entrega".equalsIgnoreCase(estado)) {
+                    cell.setForeground(new Color(0,51,204));
+                } else {
+                    cell.setForeground(Color.BLACK);
+                }
+
+                cell.setBackground(Color.WHITE);
+                return cell;
+            }
+        });
     }
+    
+private void buscarPedidosPorFecha(Date FE) {
+    try {
+        List<MostrarPedido> listaPedidos = manejopedidos.obtenerPedidosPorFecha(FE);
+        DefaultTableModel modelo = (DefaultTableModel) TablaPedidos.getModel();
+        modelo.setRowCount(0);
+        
+        for(MostrarPedido mp: listaPedidos) {
+            Object[] fila = {
+                mp.getEstEntrega(),
+                mp.getEstPago(),
+                mp.getFecha(),
+                "$ "+mp.getMonto(),
+                mp.getNombreCliente(),
+                mp.getNumero(),
+                mp.getDireccion(),
+                mp.getNombreRecibe(),  // Nuevo campo
+                mp.getFechaEntrega(),  // Nuevo campo
+                mp.getIdVenta(),
+                mp.getIdPedido()
+            };
+            modelo.addRow(fila);
+        }
+        
+        ordenarTabla(modelo);
+        configurarColoresTabla();
+    } catch(SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al buscar pedidos por fecha: " + e.getMessage(), 
+                                    "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
     
     private void quitabordes(){
         JScrollBar vs = panelTabla.getVerticalScrollBar();
@@ -1135,11 +1058,11 @@ public class Pedidos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Estado de Entrega", "Estado de Pago", "Fecha", "Monto", "Cliente", "Numero del cliente", "Dirección", "Title 8", "Title 9"
+                "Estado de Entrega", "Estado de Pago", "Fecha ", "Monto", "Cliente", "Numero del cliente", "Dirección", "Nombre Recibe", "Fecha Entrega", "Title 10", "Title 11"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, false, false
+                false, false, false, false, false, false, true, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1629,7 +1552,7 @@ public class Pedidos extends javax.swing.JFrame {
           int filaSeleccionada = TablaPedidos.getSelectedRow();
 
 if (filaSeleccionada != -1) { 
-    Object idVenta = TablaPedidos.getValueAt(filaSeleccionada, 7);
+    Object idVenta = TablaPedidos.getValueAt(filaSeleccionada, 9);
 
     int id_venta = Integer.parseInt(idVenta.toString());
     
@@ -1687,7 +1610,7 @@ if (filaSeleccionada != -1) {
 if (filaSeleccionada != -1) { 
 
     try{
-         Object idVenta = TablaPedidos.getValueAt(filaSeleccionada, 8);
+         Object idVenta = TablaPedidos.getValueAt(filaSeleccionada, 10);
          Object EPago = TablaPedidos.getValueAt(filaSeleccionada, 1);
          int id_venta = Integer.parseInt(idVenta.toString());
          String estPago = EPago.toString();
@@ -1707,31 +1630,89 @@ if (filaSeleccionada != -1) {
     }//GEN-LAST:event_btnPagadoActionPerformed
 
     private void btnEntregadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntregadoActionPerformed
-        int filaSeleccionada = TablaPedidos.getSelectedRow();
+    int filaSeleccionada = TablaPedidos.getSelectedRow();
 
-if (filaSeleccionada != -1) { 
-
-    try{
-         Object idVenta = TablaPedidos.getValueAt(filaSeleccionada, 8);
-         Object Entrega = TablaPedidos.getValueAt(filaSeleccionada, 0);
-         int id_venta = Integer.parseInt(idVenta.toString());
-         String estEntrega = Entrega.toString();
-         
-         if(estEntrega.equals("entregado")){
-             JOptionPane.showMessageDialog(null, "El Pedido ya fue entregado");
-         }else if(estEntrega.equals("cancelado")){
-             JOptionPane.showMessageDialog(null, "El Pedido fue cancelado");
-         }else{
-             boolean b =  manejopedidos.actualizarEstadoEntrega(id_venta, "entregado");
-             JOptionPane.showMessageDialog(null, "Envio ENTREGADO");
-             cargarDatos(1);
-             
-             if (!b) {
-            JOptionPane.showMessageDialog(null, "Error al cambiar el estado" );
+    if (filaSeleccionada != -1) { 
+        try {
+            // Convertir la fila de vista a modelo si hay ordenamiento
+            int modelRow = TablaPedidos.convertRowIndexToModel(filaSeleccionada);
+            
+            // Obtener los valores de las columnas correctas
+            Object estadoEnvioObj = TablaPedidos.getModel().getValueAt(modelRow, 0); // Columna 0: Estado envío
+            Object idPedidoObj = TablaPedidos.getModel().getValueAt(modelRow, 10); // Columna 10: ID Pedido
+            
+            if (idPedidoObj == null || estadoEnvioObj == null) {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener la información del pedido seleccionado");
+                return;
+            }
+            
+            // Verificar que el ID del pedido sea numérico
+            int idPedido;
+            try {
+                idPedido = Integer.parseInt(idPedidoObj.toString());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El ID del pedido no es válido: " + idPedidoObj);
+                return;
+            }
+            
+            String estEntrega = estadoEnvioObj.toString().toLowerCase();
+            
+            if(estEntrega.equals("entregado")) {
+                JOptionPane.showMessageDialog(null, "El Pedido ya fue entregado");
+                return;
+            } 
+            
+            if(estEntrega.equals("cancelado")) {
+                JOptionPane.showMessageDialog(null, "El Pedido fue cancelado");
+                return;
+            }
+            
+            // Solicitar nombre de quien recibe el pedido
+            String nombreRecibe = JOptionPane.showInputDialog(
+                null, 
+                "Ingrese el nombre de quien recibe el pedido:", 
+                "Confirmar entrega", 
+                JOptionPane.QUESTION_MESSAGE
+            );
+            
+            if(nombreRecibe == null || nombreRecibe.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar el nombre de quien recibe el pedido");
+                return;
+            }
+            
+            // Obtener fecha actual
+            java.util.Date fechaActual = new java.util.Date();
+            java.sql.Date fechaEntrega = new java.sql.Date(fechaActual.getTime());
+            
+            // Actualizar el pedido
+            boolean exito = manejopedidos.actualizarEntregaPedido(
+                idPedido, 
+                nombreRecibe, 
+                fechaEntrega
+            );
+            
+            if(exito) {
+                exito = manejopedidos.actualizarEstadoEntrega(idPedido, "entregado");
+                if(exito) {
+                    JOptionPane.showMessageDialog(null, "Pedido marcado como ENTREGADO");
+                    cargarDatos(1); // Recargar datos
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar el estado del pedido");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al actualizar los datos de entrega");
+            }
+            
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error de base de datos: " + e.getMessage());
+            e.printStackTrace();
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Error inesperado: " + e.getMessage());
+            e.printStackTrace();
         }
-         }
-    }catch(SQLException e){e.printStackTrace();}
-}
+    } else {
+        JOptionPane.showMessageDialog(null, "Por favor seleccione un pedido de la tabla");
+    }
     }//GEN-LAST:event_btnEntregadoActionPerformed
 
     private void btnCancelarPedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPedActionPerformed
@@ -1740,7 +1721,7 @@ if (filaSeleccionada != -1) {
 if (filaSeleccionada != -1) { 
 
     try{
-         Object idVenta = TablaPedidos.getValueAt(filaSeleccionada, 8);
+         Object idVenta = TablaPedidos.getValueAt(filaSeleccionada, 10);
          Object Entrega = TablaPedidos.getValueAt(filaSeleccionada, 0);
          int id_venta = Integer.parseInt(idVenta.toString());
          String estEntrega = Entrega.toString();

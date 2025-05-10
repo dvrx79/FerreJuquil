@@ -1166,16 +1166,18 @@
                           <Font name="Century Gothic" size="12" style="0"/>
                         </Property>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="9" rowCount="0">
+                          <Table columnCount="11" rowCount="0">
                             <Column editable="false" title="Estado de Entrega" type="java.lang.Object"/>
                             <Column editable="false" title="Estado de Pago" type="java.lang.Object"/>
-                            <Column editable="false" title="Fecha" type="java.lang.Object"/>
+                            <Column editable="false" title="Fecha " type="java.lang.Object"/>
                             <Column editable="false" title="Monto" type="java.lang.Object"/>
                             <Column editable="false" title="Cliente" type="java.lang.Object"/>
                             <Column editable="false" title="Numero del cliente" type="java.lang.Object"/>
                             <Column editable="true" title="Direcci&#xf3;n" type="java.lang.Object"/>
-                            <Column editable="false" title="Title 8" type="java.lang.Object"/>
-                            <Column editable="false" title="Title 9" type="java.lang.Object"/>
+                            <Column editable="false" title="Nombre Recibe" type="java.lang.Object"/>
+                            <Column editable="false" title="Fecha Entrega" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 10" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 11" type="java.lang.Object"/>
                           </Table>
                         </Property>
                         <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">

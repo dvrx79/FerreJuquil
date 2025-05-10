@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ManejoTablas;
 
 import Conexion.Conexion;
@@ -23,6 +19,7 @@ public class InsertarProducto {
      * @param fechaIngreso Fecha de ingreso al inventario
      * @param nombreProveedor Nombre del proveedor (null o vacío si no aplica)
      * @param urlImagen URL de la imagen del producto (opcional)
+     * @param stockMinimo Stock minimo a usar 
      * @return true si se insertó correctamente, false en caso contrario
      * @throws SQLException Si ocurre un error en la base de datos
      */
@@ -37,7 +34,8 @@ public class InsertarProducto {
             String unidadMedida,
             Date fechaIngreso,
             String nombreProveedor,
-            String urlImagen) throws SQLException {
+            String urlImagen,
+            int stockMinimo) throws SQLException {
         
         Connection con = null;
         boolean exito = false;
@@ -57,7 +55,8 @@ public class InsertarProducto {
                         precioVenta,
                         tipo,
                         unidadMedida,
-                        urlImagen);
+                        urlImagen,
+                        stockMinimo);
                 
                 if (idProducto > 0) {
                     // 2. Insertar en inventario
@@ -65,7 +64,8 @@ public class InsertarProducto {
                             con,
                             idProducto,
                             cantidad,
-                            fechaIngreso);
+                            fechaIngreso,
+                            stockMinimo);
                     
                     // 3. Registrar compra con proveedor (si hay proveedor)
                     if (inventarioOk && nombreProveedor != null && !nombreProveedor.trim().isEmpty()) {
@@ -149,7 +149,8 @@ public class InsertarProducto {
             float costoVenta,
             String tipo,
             String unidadMedida,
-            String urlImagen) throws SQLException {
+            String urlImagen,
+            int stockMinimo) throws SQLException {
         
         // Obtener ID de la unidad de medida
         int idUnidadMedida = obtenerIdUnidadMedida(con, unidadMedida);
@@ -159,8 +160,8 @@ public class InsertarProducto {
         
         String sql = "INSERT INTO PRODUCTO ("
                 + "nombre, descripcion, codigo_barras, costo_compra, costo_venta, "
-                + "tipo, id_unidad_medida, url_imagen) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                + "tipo, id_unidad_medida, url_imagen, stock_minimo) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, nombre);
@@ -171,6 +172,7 @@ public class InsertarProducto {
             stmt.setString(6, tipo);
             stmt.setInt(7, idUnidadMedida);
             stmt.setString(8, urlImagen);
+            stmt.setInt(9, stockMinimo);
             
             stmt.executeUpdate();
             
@@ -206,15 +208,17 @@ public class InsertarProducto {
             Connection con,
             int idProducto,
             int cantidad,
-            Date fechaIngreso) throws SQLException {
+            Date fechaIngreso,
+            int stockMinimo) throws SQLException {
         
-        String sql = "INSERT INTO INVENTARIO (id_producto, cantidad, ultima_actualizacion) "
-                + "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO INVENTARIO (id_producto, cantidad, ultima_actualizacion, stock_minimo) "
+                + "VALUES (?, ?, ?, ?)";
         
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, idProducto);
             stmt.setInt(2, cantidad);
             stmt.setDate(3, new java.sql.Date(fechaIngreso.getTime()));
+            stmt.setInt(4, stockMinimo);
             
             return stmt.executeUpdate() > 0;
         }

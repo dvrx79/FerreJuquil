@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
 import java.util.Date;
@@ -18,14 +14,17 @@ public class MostrarInventario {
     private String codigo;
     private float precioCompra;
     private float preciVenta;
-    private Date ultimaActualizacion; // Nuevo campo para FEFO
+    private Date ultimaActualizacion;
+    private int stockMinimo;  // Nuevo campo para stock mínimo
 
     public MostrarInventario() {
     }
 
+    // Constructor actualizado con stock mínimo
     public MostrarInventario(String nombre, String tipo, String descripcion, 
                            int cantidad, String codigo, float precioCompra, 
-                           float preciVenta, Date ultimaActualizacion) {
+                           float preciVenta, Date ultimaActualizacion, 
+                           int stockMinimo) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.descripcion = descripcion;
@@ -34,8 +33,10 @@ public class MostrarInventario {
         this.precioCompra = precioCompra;
         this.preciVenta = preciVenta;
         this.ultimaActualizacion = ultimaActualizacion;
+        this.stockMinimo = stockMinimo;
     }
     
+    // Getters y Setters
     public Date getUltimaActualizacion() {
         return ultimaActualizacion;
     }
@@ -43,7 +44,6 @@ public class MostrarInventario {
     public void setUltimaActualizacion(Date ultimaActualizacion) {
         this.ultimaActualizacion = ultimaActualizacion;
     }
-
 
     public String getNombre() {
         return nombre;
@@ -100,7 +100,18 @@ public class MostrarInventario {
     public void setPreciVenta(float preciVenta) {
         this.preciVenta = preciVenta;
     }
+
+    // Nuevos getter y setter para stock mínimo
+    public int getStockMinimo() {
+        return stockMinimo;
+    }
+
+    public void setStockMinimo(int stockMinimo) {
+        this.stockMinimo = stockMinimo;
+    }
     
-    
-   
+    // Método para verificar si el stock está por debajo del mínimo
+    public boolean estaBajoStockMinimo() {
+        return cantidad < stockMinimo;
+    }
 }

@@ -21,7 +21,8 @@ public class ManejoInventario {
                     "p.costo_compra AS coscom_producto, " +
                     "p.costo_venta AS cosven_producto, " +
                     "i.cantidad AS cantidad_producto, " +
-                    "i.ultima_actualizacion AS fecha_actualizacion " +
+                    "i.ultima_actualizacion AS fecha_actualizacion, " +
+                    "i.stock_minimo AS stock_minimo " +
                     "FROM INVENTARIO AS i " +
                     "INNER JOIN PRODUCTO AS p ON i.id_producto = p.id_producto " +
                     "ORDER BY i.ultima_actualizacion ASC")) {
@@ -54,7 +55,8 @@ public class ManejoInventario {
                     "p.costo_compra AS coscom_producto, " +
                     "p.costo_venta AS cosven_producto, " +
                     "i.cantidad AS cantidad_producto, " +
-                    "i.ultima_actualizacion AS fecha_actualizacion " +
+                    "i.ultima_actualizacion AS fecha_actualizacion, " +
+                    "i.stock_minimo AS stock_minimo " +
                     "FROM INVENTARIO AS i " +
                     "INNER JOIN PRODUCTO AS p ON i.id_producto = p.id_producto " +
                     "WHERE p.tipo = ? " +
@@ -90,7 +92,8 @@ public class ManejoInventario {
                     "p.costo_compra AS coscom_producto, " +
                     "p.costo_venta AS cosven_producto, " +
                     "i.cantidad AS cantidad_producto, " +
-                    "i.ultima_actualizacion AS fecha_actualizacion " +
+                    "i.ultima_actualizacion AS fecha_actualizacion, " +
+                    "i.stock_minimo AS stock_minimo " +
                     "FROM INVENTARIO AS i " +
                     "INNER JOIN PRODUCTO AS p ON i.id_producto = p.id_producto " +
                     "WHERE p.id_producto = ?")) {
@@ -153,7 +156,8 @@ public class ManejoInventario {
                     "p.costo_compra AS coscom_producto, " +
                     "p.costo_venta AS cosven_producto, " +
                     "i.cantidad AS cantidad_producto, " +
-                    "i.ultima_actualizacion AS fecha_actualizacion " +
+                    "i.ultima_actualizacion AS fecha_actualizacion, " +
+                    "i.stock_minimo AS stock_minimo " +
                     "FROM INVENTARIO AS i " +
                     "INNER JOIN PRODUCTO AS p ON i.id_producto = p.id_producto " +
                     "WHERE i.cantidad <= ? " +
@@ -189,7 +193,8 @@ public class ManejoInventario {
                     "p.costo_compra AS coscom_producto, " +
                     "p.costo_venta AS cosven_producto, " +
                     "i.cantidad AS cantidad_producto, " +
-                    "i.ultima_actualizacion AS fecha_actualizacion " +
+                    "i.ultima_actualizacion AS fecha_actualizacion, " +
+                    "i.stock_minimo AS stock_minimo " +
                     "FROM INVENTARIO AS i " +
                     "INNER JOIN PRODUCTO AS p ON i.id_producto = p.id_producto " +
                     "WHERE i.cantidad >= ? " +
@@ -225,7 +230,8 @@ public class ManejoInventario {
                     "p.costo_compra AS coscom_producto, " +
                     "p.costo_venta AS cosven_producto, " +
                     "i.cantidad AS cantidad_producto, " +
-                    "i.ultima_actualizacion AS fecha_actualizacion " +
+                    "i.ultima_actualizacion AS fecha_actualizacion, " +
+                    "i.stock_minimo AS stock_minimo " +
                     "FROM INVENTARIO AS i " +
                     "INNER JOIN PRODUCTO AS p ON i.id_producto = p.id_producto " +
                     "WHERE p.codigo_barras = ?")) {
@@ -452,7 +458,8 @@ public class ManejoInventario {
                     "p.costo_compra AS coscom_producto, " +
                     "p.costo_venta AS cosven_producto, " +
                     "i.cantidad AS cantidad_producto, " +
-                    "i.ultima_actualizacion AS fecha_actualizacion " +
+                    "i.ultima_actualizacion AS fecha_actualizacion, " +
+                    "i.stock_minimo AS stock_minimo " +
                     "FROM INVENTARIO AS i " +
                     "INNER JOIN PRODUCTO AS p ON i.id_producto = p.id_producto " +
                     "WHERE i.cantidad > 0 " +
@@ -530,7 +537,8 @@ public class ManejoInventario {
             rs.getString("codigo_producto"),
             rs.getFloat("coscom_producto"),
             rs.getFloat("cosven_producto"),
-            rs.getDate("fecha_actualizacion")
+            rs.getDate("fecha_actualizacion"),
+            rs.getInt("stock_minimo")
         );
     }
     
@@ -538,7 +546,7 @@ public class ManejoInventario {
         List<LoteInventario> lotes = new ArrayList<>();
         
         try (PreparedStatement stmt = con.prepareStatement(
-                "SELECT id_inventario, cantidad, ultima_actualizacion " +
+                "SELECT id_inventario, cantidad, ultima_actualizacion, stock_minimo " +
                 "FROM INVENTARIO " +
                 "WHERE id_producto = ? AND cantidad > 0 " +
                 "ORDER BY ultima_actualizacion ASC")) {
@@ -550,7 +558,8 @@ public class ManejoInventario {
                     lotes.add(new LoteInventario(
                         rs.getInt("id_inventario"),
                         rs.getInt("cantidad"),
-                        rs.getDate("ultima_actualizacion")
+                        rs.getDate("ultima_actualizacion"),
+                        rs.getInt("stock_minimo")
                     ));
                 }
             }
@@ -579,15 +588,18 @@ public class ManejoInventario {
         private final int idInventario;
         private final int cantidad;
         private final Date ultimaActualizacion;
+        private final int stockMinimo;
         
-        public LoteInventario(int idInventario, int cantidad, Date ultimaActualizacion) {
+        public LoteInventario(int idInventario, int cantidad, Date ultimaActualizacion, int stockMinimo) {
             this.idInventario = idInventario;
             this.cantidad = cantidad;
             this.ultimaActualizacion = ultimaActualizacion;
+            this.stockMinimo = stockMinimo;
         }
         
         public int getIdInventario() { return idInventario; }
         public int getCantidad() { return cantidad; }
         public Date getUltimaActualizacion() { return ultimaActualizacion; }
+        public int getStockMinimo() { return stockMinimo; }
     }
 }

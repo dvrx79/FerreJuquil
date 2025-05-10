@@ -105,6 +105,8 @@ id_provedor.setEditable(false);
         jLabel18 = new javax.swing.JLabel();
         btnC3 = new UI.PanelRound();
         btnCan1 = new javax.swing.JButton();
+        stockminimo = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -266,11 +268,11 @@ id_provedor.setEditable(false);
                 cantidadActionPerformed(evt);
             }
         });
-        jPanel1.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 640, 211, 34));
+        jPanel1.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 630, 211, 34));
 
         jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel13.setText("Cantidad comprada");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 620, -1, 20));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 610, -1, 20));
 
         fechaIngreso1.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
         fechaIngreso1.setForeground(new java.awt.Color(102, 102, 102));
@@ -335,13 +337,13 @@ id_provedor.setEditable(false);
         );
         btnC2Layout.setVerticalGroup(
             btnC2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnC2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(btnC2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(btnCan, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.add(btnC2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 690, -1, -1));
+        jPanel1.add(btnC2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 740, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(0, 102, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -514,7 +516,27 @@ id_provedor.setEditable(false);
                 .addContainerGap())
         );
 
-        jPanel1.add(btnC3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 690, -1, -1));
+        jPanel1.add(btnC3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 740, -1, -1));
+
+        stockminimo.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
+        stockminimo.setForeground(new java.awt.Color(102, 102, 102));
+        stockminimo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        stockminimo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        stockminimo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                stockminimoMouseClicked(evt);
+            }
+        });
+        stockminimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stockminimoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(stockminimo, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 700, 211, 34));
+
+        jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel19.setText("Stock Minimo");
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 680, -1, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -524,9 +546,7 @@ id_provedor.setEditable(false);
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
         );
 
         pack();
@@ -581,12 +601,13 @@ id_provedor.setEditable(false);
     String fechaIngresoStr = fechaIngreso1.getText().trim();
     String nombreProveedor = id_provedor.getText().trim();
     String imagenProducto = imagen.getText().trim();
+    String stockMinStr = stockminimo.getText().trim(); // Nuevo campo para stock mínimo
 
     // Validar campos vacíos (hacer el proveedor e imagen opcionales)
     if (nombreProducto.isEmpty() || descripcionProducto.isEmpty() || tipoProducto == null || tipoProducto.isEmpty() ||
         codigoProducto.isEmpty() || precioCompraStr.isEmpty() || precioVentaStr.isEmpty() ||
         cantidadProductoStr.isEmpty() || unidadMedida == null || unidadMedida.isEmpty() ||
-        fechaIngresoStr.isEmpty()) {
+        fechaIngresoStr.isEmpty() || stockMinStr.isEmpty()) { // Añadida validación para stock mínimo
 
         JOptionPane.showMessageDialog(this, "Por favor, rellena todos los campos obligatorios.",
             "Campos incompletos", JOptionPane.WARNING_MESSAGE);
@@ -608,6 +629,7 @@ id_provedor.setEditable(false);
         float precioCompra = Float.parseFloat(precioCompraStr);
         float precioVenta = Float.parseFloat(precioVentaStr);
         int cantidadProducto = Integer.parseInt(cantidadProductoStr);
+        int stockMinimo = Integer.parseInt(stockMinStr); // Convertir stock mínimo a entero
 
         if (precioCompra <= 0) {
             JOptionPane.showMessageDialog(this, "El precio de compra debe ser mayor que 0.",
@@ -627,6 +649,11 @@ id_provedor.setEditable(false);
             return;
         }
 
+        if (stockMinimo < 0) {
+            JOptionPane.showMessageDialog(this, "El stock mínimo no puede ser negativo.",
+                "Stock inválido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         // Validar formato de fecha
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -652,7 +679,8 @@ id_provedor.setEditable(false);
             unidadMedida,
             fechaIngreso,
             nombreProveedor.isEmpty() ? null : nombreProveedor,
-            imagenProducto.isEmpty() ? null : imagenProducto
+            imagenProducto.isEmpty() ? null : imagenProducto,
+            stockMinimo // Añadido el parámetro de stock mínimo
         );
 
         if (exito) {
@@ -690,9 +718,9 @@ private void limpiarCampos() {
     id_provedor.setText("");
     imagen.setText("");
     fechaIngreso1.setText("");
+    stockminimo.setText(""); // Limpiar el campo de stock mínimo
     id_tipo.setSelectedIndex(0);
     id_medida.setSelectedIndex(0);
-
 }
     private void btnC2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnC2MouseEntered
        
@@ -859,6 +887,14 @@ mTotal.setText("");         // TODO add your handling code here:
         // TODO add your handling code here:
     }//GEN-LAST:event_id_medidaActionPerformed
 
+    private void stockminimoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stockminimoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockminimoMouseClicked
+
+    private void stockminimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockminimoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockminimoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -929,6 +965,7 @@ mTotal.setText("");         // TODO add your handling code here:
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -940,5 +977,6 @@ mTotal.setText("");         // TODO add your handling code here:
     private javax.swing.JTextField pGanancia;
     private javax.swing.JTextField pVenta;
     private UI.PanelRound panelRound1;
+    private javax.swing.JTextField stockminimo;
     // End of variables declaration//GEN-END:variables
 }
