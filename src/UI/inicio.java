@@ -62,6 +62,7 @@ public class inicio extends javax.swing.JFrame {
      */
     public inicio() {
         initComponents();
+        Conexion.Programar_respaldo.iniciarRespaldoDiario();
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo6.png")).getImage());
         lstNombre.setModel(modeloLista);
         lstCantidad.setModel(modeloLista2);
