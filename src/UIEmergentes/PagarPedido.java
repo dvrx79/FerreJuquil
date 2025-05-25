@@ -889,6 +889,11 @@ private void generarFactura() throws SQLException {
     Cliente cliFac = manejoclientes.buscarClientePorIdFactura(idCliente);
     nombreCliente = cliFac.getNombre() + " " + cliFac.getaPaterno() + " " + cliFac.getaMaterno();
     rfCliente = cliFac.getRfc();
+    if(rfCliente.length() == 13){
+        tipoPersona = "PERSONA FISICA";
+    }else if(rfCliente.length() == 12){
+        tipoPersona = "PERSONA MORAL";
+    }
     direccionCliente = cliFac.getDireccion();
     ciudadEstadoCp = cliFac.getColEstCP();
     telefono = cliFac.getNumero();
