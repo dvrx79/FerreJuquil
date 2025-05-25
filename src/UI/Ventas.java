@@ -50,6 +50,12 @@ public class Ventas extends javax.swing.JFrame {
      */
     public Ventas() {
         initComponents();
+                    btnIni.setBackground(null);
+    btnIni.setOpaque(false);
+            btnVen.setBackground(new Color(251,218,160));
+        btnVen.setOpaque(true);
+        
+        
         ventas = null;
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo6.png")).getImage());
         TablaVentas.setRowHeight(30);
@@ -1141,11 +1147,14 @@ public class Ventas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnIniMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseEntered
-        btnIni.setBackground(new Color(249,193,107));
+btnIni.setBackground(new Color(249,193,107));
+        btnIni.setOpaque(true);
+        //btnIni.setBackground(new Color(249,193,107));
     }//GEN-LAST:event_btnIniMouseEntered
 
     private void btnIniMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseExited
-        btnIni.setBackground(new Color(251,218,160));
+    btnIni.setBackground(null);
+    btnIni.setOpaque(false);
     }//GEN-LAST:event_btnIniMouseExited
 
     private void btnPedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedMouseEntered
@@ -1158,12 +1167,13 @@ public class Ventas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPedMouseExited
 
     private void btnVenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVenMouseEntered
-        btnVen.setBackground(new Color(249,193,107));
+         btnVen.setBackground(new Color(249,193,107));
         btnVen.setOpaque(true);
     }//GEN-LAST:event_btnVenMouseEntered
 
     private void btnVenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVenMouseExited
-        btnVen.setOpaque(false);
+         btnVen.setBackground(new Color(251,218,160)); 
+  
     }//GEN-LAST:event_btnVenMouseExited
 
     private void btnInvMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvMouseEntered

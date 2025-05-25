@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -27,12 +29,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
@@ -51,6 +55,11 @@ public class Ingresos extends javax.swing.JFrame {
      */
     public Ingresos() {
         initComponents();
+                            btnIni.setBackground(null);
+    btnIni.setOpaque(false);
+            btnIng.setBackground(new Color(251,218,160));
+        btnIng.setOpaque(true);
+        
        // mostrarGraficaVentasPorTipoProducto(2025);
       setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo6.png")).getImage());
         
@@ -415,6 +424,8 @@ private String capitalizar(String texto) {
         jLabel22 = new javax.swing.JLabel();
         panelRound13 = new UI.PanelRound();
         panelGrafica = new UI.PanelRound();
+        panelGrafica1 = new UI.PanelRound();
+        btnIng2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ventas");
@@ -996,12 +1007,39 @@ private String capitalizar(String texto) {
         panelGrafica.setLayout(panelGraficaLayout);
         panelGraficaLayout.setHorizontalGroup(
             panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1128, Short.MAX_VALUE)
+            .addGap(0, 1170, Short.MAX_VALUE)
         );
         panelGraficaLayout.setVerticalGroup(
             panelGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 541, Short.MAX_VALUE)
+            .addGap(0, 472, Short.MAX_VALUE)
         );
+
+        panelGrafica1.setBackground(new java.awt.Color(255, 255, 255));
+        panelGrafica1.setRoundBottomLeft(50);
+        panelGrafica1.setRoundBottomRight(50);
+        panelGrafica1.setRoundTopLeft(50);
+        panelGrafica1.setRoundTopRight(50);
+        panelGrafica1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnIng2.setBackground(new java.awt.Color(102, 102, 102));
+        btnIng2.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
+        btnIng2.setText("Exportar Grafica");
+        btnIng2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        btnIng2.setContentAreaFilled(false);
+        btnIng2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnIng2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnIng2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnIng2MouseExited(evt);
+            }
+        });
+        btnIng2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIng2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1014,7 +1052,13 @@ private String capitalizar(String texto) {
                         .addComponent(panelRound2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(panelGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(panelGrafica1, javax.swing.GroupLayout.PREFERRED_SIZE, 1170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panelGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnIng2, javax.swing.GroupLayout.PREFERRED_SIZE, 1171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -1023,8 +1067,12 @@ private String capitalizar(String texto) {
                 .addContainerGap()
                 .addComponent(panelRound2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(panelGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelGrafica1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnIng2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(407, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -1060,9 +1108,9 @@ private String capitalizar(String texto) {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 449, Short.MAX_VALUE))
+                        .addGap(0, 471, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 1188, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 1210, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
@@ -1130,10 +1178,12 @@ private String capitalizar(String texto) {
 
     private void btnIniMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseEntered
         btnIni.setBackground(new Color(249,193,107));
+        btnIni.setOpaque(true);
     }//GEN-LAST:event_btnIniMouseEntered
 
     private void btnIniMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseExited
-        btnIni.setBackground(new Color(251,218,160));
+btnIni.setOpaque(false);        
+//btnIni.setBackground(new Color(251,218,160));
     }//GEN-LAST:event_btnIniMouseExited
 
     private void btnPedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedMouseEntered
@@ -1178,7 +1228,7 @@ private String capitalizar(String texto) {
     }//GEN-LAST:event_btnIngMouseEntered
 
     private void btnIngMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngMouseExited
-        btnIng.setOpaque(false);
+        btnIng.setBackground(new Color(251,218,160));
     }//GEN-LAST:event_btnIngMouseExited
 
     private void btnSalirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseEntered
@@ -1276,6 +1326,87 @@ private String capitalizar(String texto) {
         int eleccion = ea.getAnioEscogido();
         mostrarGraficaVentasPorTipoProducto(eleccion);
     }//GEN-LAST:event_btnI1MouseClicked
+
+    private void btnIng2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIng2MouseEntered
+btnIng2.setBackground(new Color(16, 185, 129)); 
+        btnIng2.setOpaque(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIng2MouseEntered
+
+    private void btnIng2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIng2MouseExited
+       btnIng2.setOpaque(false); // TODO add your handling code here:
+    }//GEN-LAST:event_btnIng2MouseExited
+
+    private void btnIng2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIng2ActionPerformed
+    try {
+        // Buscar el ChartPanel dentro del panelGrafica
+        ChartPanel chartPanel = null;
+        for (Component comp : panelGrafica.getComponents()) {
+            if (comp instanceof ChartPanel) {
+                chartPanel = (ChartPanel) comp;
+                break;
+            }
+        }
+
+        if (chartPanel == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró la gráfica para exportar.");
+            return;
+        }
+
+        JFreeChart chart = chartPanel.getChart();
+
+        // Elegir dónde guardar el PDF
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar gráfica como PDF");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivo PDF", "pdf"));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        File fileToSave = fileChooser.getSelectedFile();
+        if (!fileToSave.getName().toLowerCase().endsWith(".pdf")) {
+            fileToSave = new File(fileToSave.getAbsolutePath() + ".pdf");
+        }
+
+        // Crear documento PDF en orientación horizontal
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(com.itextpdf.text.PageSize.A4.rotate());
+        com.itextpdf.text.pdf.PdfWriter writer = com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(fileToSave));
+        document.open();
+
+        // Obtener las dimensiones del ChartPanel
+        int width = chartPanel.getWidth();
+        int height = chartPanel.getHeight();
+
+        // Ajustar el tamaño de la imagen al ancho del documento manteniendo la relación de aspecto
+        float documentWidth = document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin();
+        float scaleFactor = documentWidth / width;
+        float scaledHeight = height * scaleFactor;
+
+        // Crear BufferedImage
+        java.awt.image.BufferedImage bufferedImage = chart.createBufferedImage(
+            (int) documentWidth, 
+            (int) scaledHeight,
+            java.awt.image.BufferedImage.TYPE_INT_RGB, 
+            null);
+        
+        // Convertir BufferedImage a itext Image
+        com.itextpdf.text.Image chartImage = com.itextpdf.text.Image.getInstance(writer, bufferedImage, 1.0f);
+        
+        // Centrar la imagen verticalmente
+        float yPosition = (document.getPageSize().getHeight() - scaledHeight) / 2;
+        chartImage.setAbsolutePosition(document.leftMargin(), yPosition);
+        
+        document.add(chartImage);
+        document.close();
+
+        JOptionPane.showMessageDialog(this, "Gráfica exportada correctamente como PDF.");
+
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al guardar el PDF: " + ex.getMessage());
+    }
+    }//GEN-LAST:event_btnIng2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1385,6 +1516,7 @@ private String capitalizar(String texto) {
     private UI.PanelRound btnI6;
     private UI.PanelRound btnI8;
     private javax.swing.JButton btnIng;
+    private javax.swing.JButton btnIng2;
     private javax.swing.JButton btnIni;
     private javax.swing.JButton btnInv;
     private javax.swing.JButton btnPed;
@@ -1409,6 +1541,7 @@ private String capitalizar(String texto) {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel lblLogo;
     private UI.PanelRound panelGrafica;
+    private UI.PanelRound panelGrafica1;
     private UI.PanelRound panelRound11;
     private UI.PanelRound panelRound13;
     private UI.PanelRound panelRound2;

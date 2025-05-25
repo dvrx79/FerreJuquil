@@ -50,6 +50,12 @@ public class Inventario extends javax.swing.JFrame {
     
     public Inventario() {
         initComponents();
+                    btnIni.setBackground(null);
+    btnIni.setOpaque(false);
+            btnInv.setBackground(new Color(251,218,160));
+        btnInv.setOpaque(true);
+        
+        
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo6.png")).getImage());
         mostrarInv = null;
         tablaInventario.setRowHeight(30);
@@ -1519,10 +1525,12 @@ public class Inventario extends javax.swing.JFrame {
 
     private void btnIniMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseEntered
         btnIni.setBackground(new Color(249,193,107));
+         btnIni.setOpaque(true);
     }//GEN-LAST:event_btnIniMouseEntered
 
     private void btnIniMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseExited
-        btnIni.setBackground(new Color(251,218,160));
+         btnIni.setOpaque(false);
+      //  btnIni.setBackground(new Color(251,218,160));
     }//GEN-LAST:event_btnIniMouseExited
 
     private void btnPedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedMouseEntered
@@ -1549,7 +1557,7 @@ public class Inventario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInvMouseEntered
 
     private void btnInvMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvMouseExited
-        btnInv.setOpaque(false);
+        btnInv.setBackground(new Color(251,218,160));
     }//GEN-LAST:event_btnInvMouseExited
 
     private void btnProvMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProvMouseEntered

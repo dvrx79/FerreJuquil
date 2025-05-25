@@ -35,6 +35,11 @@ public class Pedidos extends javax.swing.JFrame {
     
     public Pedidos() {
         initComponents();
+            btnIni.setBackground(null);
+    btnIni.setOpaque(false);
+            btnPed.setBackground(new Color(251,218,160));
+        btnPed.setOpaque(true);
+        
         pedidos = null;
         TablaPedidos.setRowHeight(30);
         panelTabla.getViewport().setBackground(Color.WHITE);
@@ -435,6 +440,9 @@ private void buscarPedidosPorFecha(Date FE) {
         btnPed.setContentAreaFilled(false);
         btnPed.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPed.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPedMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnPedMouseEntered(evt);
             }
@@ -1387,11 +1395,16 @@ private void buscarPedidosPorFecha(Date FE) {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnIniMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseEntered
-        btnIni.setBackground(new Color(249,193,107));
+btnIni.setBackground(new Color(249,193,107));
+        btnIni.setOpaque(true);
     }//GEN-LAST:event_btnIniMouseEntered
 
     private void btnIniMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseExited
-        btnIni.setBackground(new Color(251,218,160));
+                                  
+    btnIni.setBackground(null);
+    btnIni.setOpaque(false);
+     
+//btnIni.setBackground(new Color(251,218,160));
     }//GEN-LAST:event_btnIniMouseExited
 
     private void btnPedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedMouseEntered
@@ -1400,7 +1413,8 @@ private void buscarPedidosPorFecha(Date FE) {
     }//GEN-LAST:event_btnPedMouseEntered
 
     private void btnPedMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedMouseExited
-     btnPed.setOpaque(false);
+ btnPed.setBackground(new Color(251,218,160)); 
+  
     }//GEN-LAST:event_btnPedMouseExited
 
     private void btnVenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVenMouseEntered
@@ -1749,6 +1763,10 @@ if (filaSeleccionada != -1) {
         java.sql.Date fechaEscogida = new java.sql.Date(fechaUtil.getTime());
         buscarPedidosPorFecha(fechaEscogida);
     }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void btnPedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPedMouseClicked
 
     /**
      * @param args the command line arguments

@@ -39,6 +39,11 @@ public class Proveedores extends javax.swing.JFrame {
      */
 public Proveedores() {
     initComponents();
+                        btnIni.setBackground(null);
+    btnIni.setOpaque(false);
+            btnProv.setBackground(new Color(251,218,160));
+        btnProv.setOpaque(true);
+    
     proveedor = null;
     setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo6.png")).getImage());
     tablaProveedores.setRowHeight(30);
@@ -1340,10 +1345,12 @@ public Proveedores() {
 
     private void btnIniMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseEntered
         btnIni.setBackground(new Color(249,193,107));
+        btnIni.setOpaque(true);
     }//GEN-LAST:event_btnIniMouseEntered
 
     private void btnIniMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniMouseExited
-        btnIni.setBackground(new Color(251,218,160));
+        btnIni.setOpaque(false);
+        //btnIni.setBackground(new Color(251,218,160));
     }//GEN-LAST:event_btnIniMouseExited
 
     private void btnPedMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPedMouseEntered
@@ -1379,7 +1386,8 @@ public Proveedores() {
     }//GEN-LAST:event_btnProvMouseEntered
 
     private void btnProvMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProvMouseExited
-        btnProv.setOpaque(false);
+        btnProv.setBackground(new Color(251,218,160));
+//btnProv.setOpaque(false);
     }//GEN-LAST:event_btnProvMouseExited
 
     private void btnIngMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngMouseEntered
