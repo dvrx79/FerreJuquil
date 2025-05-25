@@ -14,13 +14,15 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
  * @author salin
  */
 public class AgregarCliente extends javax.swing.JDialog {
-    private boolean e1 = false,e2 = false,e3 = false,e4 = false,e5 = false,e6 = false, aceptado;
+    private boolean e1 = false,e2 = false,e3 = false,e4 = false,e5 = false,e6 = false,e7 = false,e8 = false, aceptado;
     private ManejoDirecciones manejomunicipios = new ManejoDirecciones();
     private ManejoClientes manejoclientes = new ManejoClientes();
     
@@ -33,6 +35,32 @@ public class AgregarCliente extends javax.swing.JDialog {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/logo6.png")).getImage());
         cargarDatosComboBox();
+        btnC2.setEnabled(false);
+        btnAceptar.setEnabled(false);
+        
+        DocumentListener validadorRFC = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validarYActualizarBoton();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validarYActualizarBoton();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validarYActualizarBoton();
+            }
+        };
+
+        // Asignar el listener a cada campo relevante
+        txtNombre.getDocument().addDocumentListener(validadorRFC);
+        txtAPaterno.getDocument().addDocumentListener(validadorRFC);
+        txtAMaterno.getDocument().addDocumentListener(validadorRFC);
+        txtFecNac.getDocument().addDocumentListener(validadorRFC);
+        txtRfc.getDocument().addDocumentListener(validadorRFC);
     }
     
     private void cargarDatosComboBox(){
@@ -98,6 +126,9 @@ public class AgregarCliente extends javax.swing.JDialog {
         jLabel10 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtRfc = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtFecNac = new javax.swing.JTextField();
+        lblValidar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -409,6 +440,35 @@ public class AgregarCliente extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel2.setText("Fecha de Nacimiento:");
+
+        txtFecNac.setFont(new java.awt.Font("Ebrima", 0, 12)); // NOI18N
+        txtFecNac.setForeground(new java.awt.Color(153, 153, 153));
+        txtFecNac.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtFecNac.setText("Año(98)  Mes(04)  Dia(15)");
+        txtFecNac.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        txtFecNac.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtFecNacMouseClicked(evt);
+            }
+        });
+        txtFecNac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFecNacActionPerformed(evt);
+            }
+        });
+        txtFecNac.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFecNacKeyTyped(evt);
+            }
+        });
+
+        lblValidar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblValidar.setForeground(new java.awt.Color(204, 0, 0));
+        lblValidar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblValidar.setText("El RFC no es valido");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -418,11 +478,7 @@ public class AgregarCliente extends javax.swing.JDialog {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboPueblos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -446,16 +502,26 @@ public class AgregarCliente extends javax.swing.JDialog {
                                 .addComponent(btnC3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 2, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCalle, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNumeroCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addGap(0, 2, Short.MAX_VALUE)
+                                            .addComponent(jLabel2)))
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cboPueblos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCalle, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                            .addComponent(txtNumeroCasa, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                            .addComponent(txtRfc, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                            .addComponent(txtFecNac, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                            .addComponent(lblValidar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -494,11 +560,17 @@ public class AgregarCliente extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
                     .addComponent(txtNumeroCasa, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFecNac, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRfc, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblValidar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnC2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnC3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -685,8 +757,11 @@ public class AgregarCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_txtNumeroCasaMouseClicked
 
     private void txtRfcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtRfcMouseClicked
-       txtRfc.setText("");
+       if(!e8){
+        txtRfc.setText("");
        txtRfc.setForeground(Color.BLACK);
+       e8 = true;
+       }
     }//GEN-LAST:event_txtRfcMouseClicked
 
     private void txtRfcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRfcActionPerformed
@@ -695,7 +770,7 @@ public class AgregarCliente extends javax.swing.JDialog {
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
         char c = evt.getKeyChar();
-                if (!Character.isLetter(c)) {
+                if (!Character.isLetter(c) && !Character.isWhitespace(c)) {
                     evt.consume(); // Ignorar el carácter
                 }
     }//GEN-LAST:event_txtNombreKeyTyped
@@ -742,6 +817,25 @@ public class AgregarCliente extends javax.swing.JDialog {
                 }
     }//GEN-LAST:event_txtRfcKeyTyped
 
+    private void txtFecNacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFecNacMouseClicked
+        if(!e7){
+        txtFecNac.setText("");
+        txtFecNac.setForeground(Color.BLACK);
+        e7 = true;
+        }
+    }//GEN-LAST:event_txtFecNacMouseClicked
+
+    private void txtFecNacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFecNacActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFecNacActionPerformed
+
+    private void txtFecNacKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFecNacKeyTyped
+        char c = evt.getKeyChar();
+                if (!Character.isDigit(c) && !Character.isWhitespace(c) ) {
+                    evt.consume(); // Ignorar el carácter
+                }
+    }//GEN-LAST:event_txtFecNacKeyTyped
+
     public boolean isAceptado() {
         return aceptado;
     }
@@ -757,6 +851,43 @@ public class AgregarCliente extends javax.swing.JDialog {
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
+    
+     private void validarYActualizarBoton() {
+        String nombre = txtNombre.getText();
+        String apellidoPaterno = txtAPaterno.getText();
+        String apellidoMaterno = txtAMaterno.getText();
+        String fechaNacimiento = txtFecNac.getText();
+        String rfcIngresado = txtRfc.getText();
+
+
+        boolean valido = validarRFC(nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, rfcIngresado);
+        btnAceptar.setEnabled(valido);
+        btnC2.setEnabled(valido);
+        if(valido){
+        lblValidar.setText("El RFC es valido");
+        lblValidar.setForeground(new Color(0,153,0));
+        }else{
+            lblValidar.setText("El RFC no es valido");
+        lblValidar.setForeground(new Color(204,0,0));
+        }
+    }
+
+    public boolean validarRFC(String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento, String rfcIngresado) {
+    if (nombre.isEmpty() || apellidoPaterno.length() < 2 || apellidoMaterno.isEmpty()
+            || fechaNacimiento.isEmpty() || rfcIngresado.length() != 13) {
+        return false;
+    }
+
+    char inicialNombre = nombre.trim().toUpperCase().charAt(0);
+    char inicialApellidoMaterno = apellidoMaterno.trim().toUpperCase().charAt(0);
+    String inicialesApellidoPaterno = apellidoPaterno.trim().toUpperCase().substring(0, 2);
+    String fechaSinEspacios = fechaNacimiento.replaceAll("\\s+", "");
+
+    String rfcEsperado = inicialesApellidoPaterno + inicialApellidoMaterno + inicialNombre + fechaSinEspacios;
+    String rfcInicio = rfcIngresado.trim().toUpperCase().substring(0, 10);
+
+    return rfcEsperado.equals(rfcInicio);
+}
 
     /**
      * @param args the command line arguments
@@ -812,6 +943,7 @@ public class AgregarCliente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -819,10 +951,12 @@ public class AgregarCliente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblValidar;
     private UI.PanelRound panelRound1;
     private javax.swing.JTextField txtAMaterno;
     private javax.swing.JTextField txtAPaterno;
     private javax.swing.JTextField txtCalle;
+    private javax.swing.JTextField txtFecNac;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNumeroCasa;
     private javax.swing.JTextField txtNumeroTel;
