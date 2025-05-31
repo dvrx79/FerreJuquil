@@ -792,7 +792,7 @@ try {
             if (lblCliente.getText().equals("-")) {
                 JOptionPane.showMessageDialog(null, "Selecciona un cliente para facturar");
             } else {
-                JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Se ha generado la factura en la carpeta FACTURAS dentro del escritorio, y la nota en ela carpeta Notas de Ventas");
+                JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Se ha generado la factura en la carpeta FACTURAS dentro del escritorio, y la nota en la carpeta Notas de Ventas");
                 
                 hacerVenta(); // Llamada a hacerVenta después de generar la factura (si es necesario)
                 generarNota();
@@ -825,7 +825,7 @@ try {
             if((!txtNombre2.getText().equals("Ingresa un nombre") && !txtNombre2.getText().isEmpty()) && (!txtNumero.getText().equals("Ingresa un numero") && !txtNumero.getText().isEmpty())){
             hacerVentaBancaria();
             generarNota();
-            JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Nota guardad en la carpeta Notas de ventas en el escritorio");
+            JOptionPane.showMessageDialog(null, "Venta Realizada Exitosamente, Nota guardada en la carpeta Notas de ventas en el escritorio");
             aceptado = true;
             this.dispose();}else{
                 JOptionPane.showMessageDialog(null, "Rellena todos los campos");

@@ -736,7 +736,7 @@ public class PagarPedido extends javax.swing.JDialog {
                     }else{
                         hacerPedidoContraEntregaBancario();
                         generarNota();
-                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardad en la carpeta Nota de ventas dentro del escritorio");
+                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardada en la carpeta Nota de ventas dentro del escritorio");
                         aceptado = true;
                         this.dispose();
                     }
@@ -847,7 +847,7 @@ public class PagarPedido extends javax.swing.JDialog {
                     }else{
                         hacerPedidoBancaria();
                         generarNota();
-                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardad en la carpeta Nota de ventas dentro del escritorio");
+                        JOptionPane.showMessageDialog(null, "Pedido Generado Exitosamente, Nota guardada en la carpeta Nota de ventas dentro del escritorio");
                         aceptado = true;
                         this.dispose();
                     }
