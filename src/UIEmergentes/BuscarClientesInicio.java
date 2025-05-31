@@ -230,8 +230,6 @@ public class BuscarClientesInicio extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         BtnA = new UI.PanelRound();
         btnCancelar = new javax.swing.JButton();
-        btnC = new UI.PanelRound();
-        btnAceptar = new javax.swing.JButton();
         panelRound2 = new UI.PanelRound();
         jLabel2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
@@ -250,14 +248,14 @@ public class BuscarClientesInicio extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Selecciona a un cliente");
+        jLabel1.setText("Historial de clientes");
 
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
         panelRound1.setLayout(panelRound1Layout);
         panelRound1Layout.setHorizontalGroup(
             panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRound1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -313,52 +311,6 @@ public class BuscarClientesInicio extends javax.swing.JDialog {
         BtnALayout.setVerticalGroup(
             BtnALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-        );
-
-        btnC.setBackground(new java.awt.Color(250, 176, 47));
-        btnC.setRoundBottomLeft(40);
-        btnC.setRoundBottomRight(40);
-        btnC.setRoundTopLeft(40);
-        btnC.setRoundTopRight(40);
-        btnC.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnCMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnCMouseExited(evt);
-            }
-        });
-
-        btnAceptar.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        btnAceptar.setText("Seleccionar");
-        btnAceptar.setBorder(null);
-        btnAceptar.setContentAreaFilled(false);
-        btnAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnAceptarMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnAceptarMouseExited(evt);
-            }
-        });
-        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAceptarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout btnCLayout = new javax.swing.GroupLayout(btnC);
-        btnC.setLayout(btnCLayout);
-        btnCLayout.setHorizontalGroup(
-            btnCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btnCLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        btnCLayout.setVerticalGroup(
-            btnCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnAceptar, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
         );
 
         panelRound2.setBackground(new java.awt.Color(204, 204, 204));
@@ -455,17 +407,16 @@ public class BuscarClientesInicio extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelRound1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(btnC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BtnA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelTabla)
-                    .addComponent(panelRound2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panelTabla)
+                            .addComponent(panelRound2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(250, 250, 250)
+                        .addComponent(BtnA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -476,11 +427,9 @@ public class BuscarClientesInicio extends javax.swing.JDialog {
                 .addComponent(panelRound2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18))
+                .addGap(18, 18, 18)
+                .addComponent(BtnA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -512,14 +461,6 @@ public class BuscarClientesInicio extends javax.swing.JDialog {
         BtnA.setBackground(new Color(204,204,204)); //[250,176,47]
     }//GEN-LAST:event_BtnAMouseExited
 
-    private void btnCMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCMouseEntered
-        btnC.setBackground(new Color(228,143,5)); //[250,176,47]
-    }//GEN-LAST:event_btnCMouseEntered
-
-    private void btnCMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCMouseExited
-        btnC.setBackground(new Color(250,176,47));
-    }//GEN-LAST:event_btnCMouseExited
-
     private void btnCancelarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseEntered
         BtnA.setBackground(new Color(153,153,153)); //[250,176,47]
     }//GEN-LAST:event_btnCancelarMouseEntered
@@ -527,37 +468,6 @@ public class BuscarClientesInicio extends javax.swing.JDialog {
     private void btnCancelarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseExited
         BtnA.setBackground(new Color(204,204,204)); //[250,176,47]
     }//GEN-LAST:event_btnCancelarMouseExited
-
-    private void btnAceptarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseEntered
-        btnC.setBackground(new Color(228,143,5)); //[250,176,47]
-    }//GEN-LAST:event_btnAceptarMouseEntered
-
-    private void btnAceptarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseExited
-        btnC.setBackground(new Color(250,176,47));
-    }//GEN-LAST:event_btnAceptarMouseExited
-
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-      int filaSeleccionada = tablaClientes.getSelectedRow();
-
-if (filaSeleccionada != -1) {
-    Object idClien = tablaClientes.getValueAt(filaSeleccionada, 4);
-    Object nombre = tablaClientes.getValueAt(filaSeleccionada, 0);
-    Object numero = tablaClientes.getValueAt(filaSeleccionada, 1);
-
-    idCliente = Integer.parseInt(idClien.toString());
-    nombreCliente = nombre.toString();
-    numeroCliente = numero.toString();
-    
-    System.out.println("Cliente "+idCliente);
-    
-    aceptado = true;
-    this.dispose();
-} else {
-    JOptionPane.showMessageDialog(null,"No se ha seleccionado ninguna fila.");
-}
-        
-    
-    }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
         char c = evt.getKeyChar();
@@ -633,9 +543,7 @@ if (filaSeleccionada != -1) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private UI.PanelRound BtnA;
-    private javax.swing.JButton btnAceptar;
     private javax.swing.JLabel btnBuscar;
-    private UI.PanelRound btnC;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
